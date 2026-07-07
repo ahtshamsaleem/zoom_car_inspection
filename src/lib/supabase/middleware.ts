@@ -34,40 +34,35 @@ export async function updateSession(request: NextRequest) {
   const isAuthPage =
     pathname.startsWith("/login") || pathname.startsWith("/signup");
   const isPublicPage = pathname === "/";
+  const isOnboardingWaitingPage = pathname.startsWith("/onboarding/waiting");
   const isOnboardingPage = pathname.startsWith("/onboarding");
 
+  // Not logged in: allow auth pages and the public page through, block everything else
   if (!user && !isAuthPage && !isPublicPage) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
   }
 
-  if (user && isAuthPage) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/dashboard";
-    return NextResponse.redirect(url);
-  }
-
-  if (user && !isAuthPage && !isPublicPage && !isOnboardingPage) {
-    const { data: profile } = await supabase
+  if (user) {
+    const { data: profile, error } = await supabase
       .from("profiles")
-      .select("role, company_id")
+      .select("role, company_id, is_active")
       .eq("id", user.id)
       .single();
 
-    if (profile?.role === "manager" && !profile.company_id) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/onboarding";
-      return NextResponse.redirect(url);
-    }
+    const isInactive = error || !profile?.is_active;
 
-    if (profile?.role === "inspector" && !profile.company_id) {
+    // Send inactive users to the waiting page — but don't redirect
+    // them again if they're already there, or you get a loop.
+    if (isInactive && !isOnboardingWaitingPage) {
       const url = request.nextUrl.clone();
       url.pathname = "/onboarding/waiting";
       return NextResponse.redirect(url);
     }
 
-    if (profile?.role === "inspector" && isManagerRoute(pathname)) {
+    // Active users shouldn't sit on login/signup/public/onboarding pages
+    if (!isInactive && (isAuthPage || isPublicPage || isOnboardingPage)) {
       const url = request.nextUrl.clone();
       url.pathname = "/dashboard";
       return NextResponse.redirect(url);

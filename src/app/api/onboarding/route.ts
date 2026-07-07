@@ -53,31 +53,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  if (auth.profile.company_id) {
-    return NextResponse.json({ companyId: auth.profile.company_id });
-  }
-
-  if (auth.profile.role !== "manager") {
-    return NextResponse.json(
-      { error: "Only managers can create a company. Ask your manager for an invite." },
-      { status: 403 }
-    );
-  }
-
-  const body = await request.json();
-  const companyName = body.companyName?.trim() || "Zoom Car Inspection";
+ 
+  // const body = await request.json();
+  // const companyName = body.companyName?.trim();
+ 
 
   const admin = createAdminClient();
 
   const { data: company, error: companyError } = await admin
     .from("companies")
-    .insert({
-      name: companyName,
-      email: auth.profile.email,
-      settings: { reportFooter: "" },
-    })
     .select()
     .single();
+
+
+    console.log("THE COMPANY NAME IS ", company)
 
   if (companyError) {
     return NextResponse.json({ error: companyError.message }, { status: 500 });
@@ -85,23 +74,34 @@ export async function POST(request: Request) {
 
   const { error: profileError } = await admin
     .from("profiles")
-    .update({ company_id: company.id, updated_at: new Date().toISOString() })
+    .update({ company_id: company.id, updated_at: new Date().toISOString(), is_active: false })
     .eq("id", auth.user.id);
 
   if (profileError) {
     return NextResponse.json({ error: profileError.message }, { status: 500 });
   }
 
-  await admin.from("inspection_templates").insert(
-    DEFAULT_TEMPLATES.map((t) => ({ ...t, company_id: company.id }))
-  );
+  // await admin.from("inspection_templates").insert(
+  //   DEFAULT_TEMPLATES.map((t) => ({ ...t, company_id: company.id }))
+  // );
 
-  await admin.from("pricing").insert(
-    DEFAULT_PRICING.map((p) => ({ ...p, company_id: company.id }))
-  );
+  // await admin.from("pricing").insert(
+  //   DEFAULT_PRICING.map((p) => ({ ...p, company_id: company.id }))
+  // );
 
   return NextResponse.json({ companyId: company.id, company }, { status: 201 });
 }
+
+
+
+
+
+
+
+
+
+
+
 
 export async function GET() {
   const supabase = await createClient();

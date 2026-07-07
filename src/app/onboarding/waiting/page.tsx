@@ -15,10 +15,9 @@ export default function WaitingPage() {
           <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-white">
             <Car className="h-6 w-6" />
           </div>
-          <CardTitle className="text-2xl">Waiting for Assignment</CardTitle>
+          <CardTitle className="text-2xl">Waiting for Approval</CardTitle>
           <CardDescription>
-            Your account has been created. Please contact your manager to assign
-            you to a company before you can start inspections.
+            Your account has been created. Please contact your manager to approve your account before you can start inspections.
           </CardDescription>
         </CardHeader>
         <CardContent>

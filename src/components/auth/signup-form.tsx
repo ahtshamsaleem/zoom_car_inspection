@@ -53,10 +53,7 @@ export function SignupForm() {
   const role = form.watch("role");
 
   const onSubmit = async (data: SignupWithCompanyValues) => {
-    if (data.role === "manager" && !data.companyName?.trim()) {
-      form.setError("companyName", { message: "Company name is required for managers" });
-      return;
-    }
+    
 
     console.log(data)
 
@@ -80,11 +77,11 @@ export function SignupForm() {
       return;
     }
 
-    if (data.role === "manager" && authData.user) {
+     
       const res = await fetch("/api/onboarding", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ companyName: data.companyName }),
+        body: JSON.stringify({ authData: authData }),
       });
 
       if (!res.ok) {
@@ -93,12 +90,13 @@ export function SignupForm() {
         setLoading(false);
         return;
       }
-    }
+
+
 
     toast.success(
       data.role === "manager"
         ? "Account and company created!"
-        : "Account created! Ask your manager to assign you to the company."
+        : "Account created! Ask your manager to approve your account."
     );
     router.push(data.role === "manager" ? "/dashboard" : "/login");
   };
@@ -129,7 +127,7 @@ export function SignupForm() {
             <Label htmlFor="password">Password</Label>
             <Input id="password" type="password" {...form.register("password")} />
           </div>
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <Label>Role</Label>
             <Select
               value={role}
@@ -156,7 +154,7 @@ export function SignupForm() {
                 <p className="text-xs text-red-500">{form.formState.errors.companyName.message}</p>
               )}
             </div>
-          )}
+          )} */}
         </CardContent>
         <CardFooter className="flex flex-col gap-3">
           <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={loading}>
