@@ -37,7 +37,11 @@ export async function updateSession(request: NextRequest) {
   const isOnboardingWaitingPage = pathname.startsWith("/onboarding/waiting");
   const isOnboardingPage = pathname.startsWith("/onboarding");
 
-  // Not logged in: allow auth pages and the public page through, block everything else
+  // Not logged in: allow auth pages and the public page through, block everything else.
+  // Note: with email confirmation ON, `user` is null here until the user clicks the
+  // confirmation link and logs in — this is expected. The on_auth_user_created DB
+  // trigger already created their profile row at signup time, so by the time they
+  // do get a session, the is_active check below reflects the right state immediately.
   if (!user && !isAuthPage && !isPublicPage) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";

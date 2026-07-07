@@ -10,13 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Card,
   CardContent,
   CardDescription,
@@ -27,78 +20,58 @@ import {
 import { createClient } from "@/lib/supabase/client";
 import { signupSchema, type SignupFormValues } from "@/lib/validations/schemas";
 import { toast } from "sonner";
-import { z } from "zod";
-
-const signupWithCompanySchema = signupSchema.extend({
-  companyName: z.string().optional(),
-});
-
-type SignupWithCompanyValues = z.infer<typeof signupWithCompanySchema>;
 
 export function SignupForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const form = useForm<SignupWithCompanyValues>({
-    resolver: zodResolver(signupWithCompanySchema),
+  const form = useForm<SignupFormValues>({
+    resolver: zodResolver(signupSchema),
     defaultValues: {
       fullName: "",
       email: "",
       password: "",
-      role: "inspector",
-      companyName: "",
     },
   });
 
-  const role = form.watch("role");
-
-  const onSubmit = async (data: SignupWithCompanyValues) => {
-    
-
-    console.log(data)
-
+  const onSubmit = async (data: SignupFormValues) => {
     setLoading(true);
     const supabase = createClient();
-    console.log("SUPABASE", supabase)
+
+    // Every signup is created as an inspector, inactive by default.
+    // The on_auth_user_created trigger reads full_name from metadata and
+    // handles the profile insert — no client-side API call needed.
     const { data: authData, error } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
       options: {
-        data: { full_name: data.fullName, role: data.role },
+        data: {
+          full_name: data.fullName,
+        },
       },
     });
 
-
-      console.log("authData", authData)
     if (error) {
-      console.log("ERROR", error)
       toast.error(error.message);
       setLoading(false);
       return;
     }
 
-     
-      const res = await fetch("/api/onboarding", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ authData: authData }),
-      });
+    // Email confirmation ON: authData.session is null here.
+    // The trigger has already fired (it runs on the auth.users INSERT,
+    // not on confirmation), so the profile exists — the user just needs
+    // to confirm their email before they can log in and get a session.
+    if (!authData.session) {
+      toast.success("Check your email to confirm your account before logging in.");
+      setLoading(false);
+      router.push("/login");
+      return;
+    }
 
-      if (!res.ok) {
-        const err = await res.json();
-        toast.error(err.error || "Company setup failed");
-        setLoading(false);
-        return;
-      }
-
-
-
-    toast.success(
-      data.role === "manager"
-        ? "Account and company created!"
-        : "Account created! Ask your manager to approve your account."
-    );
-    router.push(data.role === "manager" ? "/dashboard" : "/login");
+    // Email confirmation OFF: session exists immediately.
+    toast.success("Account created! Ask your manager to approve your account.");
+    setLoading(false);
+    router.push("/login");
   };
 
   return (
@@ -127,34 +100,6 @@ export function SignupForm() {
             <Label htmlFor="password">Password</Label>
             <Input id="password" type="password" {...form.register("password")} />
           </div>
-          {/* <div className="space-y-2">
-            <Label>Role</Label>
-            <Select
-              value={role}
-              onValueChange={(v) => form.setValue("role", v as "manager" | "inspector")}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="inspector">Inspector</SelectItem>
-                <SelectItem value="manager">Manager</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          {role === "manager" && (
-            <div className="space-y-2">
-              <Label htmlFor="companyName">Company Name</Label>
-              <Input
-                id="companyName"
-                placeholder="Zoom Car Inspection"
-                {...form.register("companyName")}
-              />
-              {form.formState.errors.companyName && (
-                <p className="text-xs text-red-500">{form.formState.errors.companyName.message}</p>
-              )}
-            </div>
-          )} */}
         </CardContent>
         <CardFooter className="flex flex-col gap-3">
           <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={loading}>
