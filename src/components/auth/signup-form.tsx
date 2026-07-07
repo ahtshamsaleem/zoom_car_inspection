@@ -58,8 +58,11 @@ export function SignupForm() {
       return;
     }
 
+    console.log(data)
+
     setLoading(true);
     const supabase = createClient();
+    console.log("SUPABASE", supabase)
     const { data: authData, error } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
@@ -68,7 +71,10 @@ export function SignupForm() {
       },
     });
 
+
+      console.log("authData", authData)
     if (error) {
+      console.log("ERROR", error)
       toast.error(error.message);
       setLoading(false);
       return;

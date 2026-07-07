@@ -4,24 +4,58 @@ import { getAuthProfile, requireManager, requireCompany } from "@/lib/auth-helpe
 import { employeeSchema } from "@/lib/validations/schemas";
 import { NextResponse } from "next/server";
 
+// export async function GET() {
+//   const supabase = await createClient();
+//   const auth = await getAuthProfile(supabase);
+//   const denied = requireCompany(auth);
+//   if (denied) return denied;
+
+//   const { data, error } = await supabase
+//     .from("profiles")
+//     .select("*")
+//     .eq("company_id", auth!.profile.company_id!)
+//     .order("created_at", { ascending: false });
+
+//   if (error) {
+//     return NextResponse.json({ error: error.message }, { status: 500 });
+//   }
+
+//   return NextResponse.json(data);
+// }
+
 export async function GET() {
   const supabase = await createClient();
   const auth = await getAuthProfile(supabase);
-  const denied = requireCompany(auth);
+  const denied = requireManager(auth);
+
   if (denied) return denied;
 
-  const { data, error } = await supabase
+  let admin;
+  try {
+    admin = createAdminClient();
+  } catch {
+    return NextResponse.json(
+      { error: "Server missing SUPABASE_SERVICE_ROLE_KEY" },
+      { status: 500 }
+    );
+  }
+
+  const { data: employees, error } = await admin
     .from("profiles")
     .select("*")
-    .eq("company_id", auth!.profile.company_id!)
     .order("created_at", { ascending: false });
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message },
+      { status: 500 }
+    );
   }
 
-  return NextResponse.json(data);
+  return NextResponse.json(employees);
 }
+
+
 
 export async function POST(request: Request) {
   const supabase = await createClient();
