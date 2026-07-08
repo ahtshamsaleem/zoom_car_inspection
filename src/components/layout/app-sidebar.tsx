@@ -33,6 +33,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 import type { UserRole } from "@/types";
+import { ThemeToggle } from "../theme/theme-toggle";
 
 const managerNav = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -87,6 +88,10 @@ export function AppSidebar({ role, userName }: AppSidebarProps) {
             <p className="text-xs text-muted-foreground">Inspection</p>
           </div>
         </Link>
+
+         <ThemeToggle />
+
+         
       </SidebarHeader>
 
       <SidebarContent>
@@ -149,6 +154,7 @@ export function DashboardShell({
       <main className="flex-1 overflow-auto">
         <div className="flex h-14 items-center gap-2 border-b px-4 lg:hidden">
           <SidebarTrigger />
+         
           <span className="font-semibold text-sm">Zoom Car Inspection</span>
         </div>
         <div className="p-4 lg:p-6">{children}</div>
