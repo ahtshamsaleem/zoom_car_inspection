@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { EXTERIOR_PARTS, CONDITION_COLORS } from "@/constants/inspection";
 import type { PartCondition, PartInspection } from "@/types";
 import { cn } from "@/lib/utils";
+import { VehicleSvg } from "./vehicleSvg/VehicleSvg";
 
 interface VehicleDiagramProps {
   parts: Record<string, PartInspection>;
@@ -143,127 +144,15 @@ export function VehicleDiagram({
   parts,
   activePartId,
   onPartClick,
-  view = "top",
 }: VehicleDiagramProps) {
-  const partList = useMemo(() => EXTERIOR_PARTS.map((p) => p.id), []);
-
-  if (view === "side") {
-    return (
-      <div className="rounded-xl border bg-slate-50 p-4">
-        <svg viewBox="0 0 400 120" className="w-full max-w-lg mx-auto">
-          <text x="200" y="15" textAnchor="middle" className="fill-muted-foreground text-xs">
-            Side View
-          </text>
-          {/* Body outline */}
-          <path
-            d="M 40 80 Q 60 50 120 45 L 280 45 Q 340 50 360 80 L 360 90 Q 350 95 340 90 L 60 90 Q 50 95 40 90 Z"
-            fill="#f1f5f9"
-            stroke="#94a3b8"
-            strokeWidth="1.5"
-          />
-          {/* Wheels */}
-          <circle cx="100" cy="90" r="18" fill="#334155" />
-          <circle cx="100" cy="90" r="10" fill="#64748b" />
-          <circle cx="300" cy="90" r="18" fill="#334155" />
-          <circle cx="300" cy="90" r="10" fill="#64748b" />
-          {/* Hood area */}
-          <path
-            d="M 120 45 L 180 45 L 180 85 L 120 85 Z"
-            fill={getPartColor("hood", parts)}
-            stroke={activePartId === "hood" ? "#2563eb" : "#64748b"}
-            strokeWidth={activePartId === "hood" ? 3 : 1}
-            className="cursor-pointer hover:opacity-80"
-            onClick={() => onPartClick("hood")}
-          />
-          {/* Doors area */}
-          <path
-            d="M 180 45 L 260 45 L 260 85 L 180 85 Z"
-            fill={getPartColor("left_front_door", parts)}
-            stroke={activePartId?.includes("door") ? "#2563eb" : "#64748b"}
-            strokeWidth={activePartId?.includes("door") ? 3 : 1}
-            className="cursor-pointer hover:opacity-80"
-            onClick={() => onPartClick("left_front_door")}
-          />
-          {/* Trunk area */}
-          <path
-            d="M 260 45 L 320 45 L 340 80 L 260 85 Z"
-            fill={getPartColor("trunk", parts)}
-            stroke={activePartId === "trunk" ? "#2563eb" : "#64748b"}
-            strokeWidth={activePartId === "trunk" ? 3 : 1}
-            className="cursor-pointer hover:opacity-80"
-            onClick={() => onPartClick("trunk")}
-          />
-        </svg>
-      </div>
-    );
-  }
-
   return (
     <div className="rounded-xl border bg-slate-50 p-4">
-      <svg viewBox="0 0 400 380" className="w-full max-w-md mx-auto">
-        <text x="200" y="25" textAnchor="middle" className="fill-muted-foreground text-sm font-medium">
-          Top-Down View — Click a panel to inspect
-        </text>
 
-        {/* Car body outline */}
-        <rect
-          x="125"
-          y="50"
-          width="150"
-          height="290"
-          rx="20"
-          fill="none"
-          stroke="#94a3b8"
-          strokeWidth="2"
-          strokeDasharray="4 2"
-        />
-
-        {partList.map((partId) => {
-          const pathData = TOP_DOWN_PATHS[partId];
-          if (!pathData) return null;
-          const isActive = activePartId === partId;
-          const fill = getPartColor(partId, parts);
-          const hasIssue = parts[partId] && parts[partId].condition !== "good";
-
-          return (
-            <motion.g
-              key={partId}
-              initial={false}
-              animate={{ scale: isActive ? 1.02 : 1 }}
-              style={{ transformOrigin: `${pathData.x}px ${pathData.y}px` }}
-            >
-              <path
-                d={pathData.d}
-                fill={fill}
-                fillOpacity={hasIssue ? 0.85 : 0.6}
-                stroke={isActive ? "#2563eb" : "#64748b"}
-                strokeWidth={isActive ? 2.5 : 1}
-                className="cursor-pointer transition-all hover:opacity-90"
-                onClick={() => onPartClick(partId)}
-              />
-              <title>{pathData.label}</title>
-            </motion.g>
-          );
-        })}
-
-        {/* Wheels */}
-        {[
-          [145, 125],
-          [255, 125],
-          [145, 265],
-          [255, 265],
-        ].map(([cx, cy], i) => (
-          <circle
-            key={i}
-            cx={cx}
-            cy={cy}
-            r="12"
-            fill="#334155"
-            stroke="#1e293b"
-            strokeWidth="1"
-          />
-        ))}
-      </svg>
+      <VehicleSvg
+        parts={parts}
+        activePartId={activePartId}
+        onPartClick={onPartClick}
+      />
 
       <div className="mt-4 flex flex-wrap gap-2 justify-center">
         {Object.entries(CONDITION_COLORS).map(([condition, color]) => (
@@ -272,7 +161,9 @@ export function VehicleDiagram({
               className="h-3 w-3 rounded-full border"
               style={{ backgroundColor: color }}
             />
-            <span className="capitalize text-muted-foreground">{condition}</span>
+            <span className="capitalize text-muted-foreground">
+              {condition}
+            </span>
           </div>
         ))}
       </div>
