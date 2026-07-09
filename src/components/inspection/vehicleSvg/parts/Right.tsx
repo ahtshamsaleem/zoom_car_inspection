@@ -3,7 +3,7 @@ import { VehiclePart } from "../VehiclePart";
 
  
 
-export const Front = ({ parts, activePartId, onPartClick }: VehicleSvgProps) => {
+export const Right = ({ parts, activePartId, onPartClick }: VehicleSvgProps) => {
   return (
     <>
       <VehiclePart
