@@ -134,7 +134,10 @@ const TOP_DOWN_PATHS: Record<
   },
 };
 
-function getPartColor(partId: string, parts: Record<string, PartInspection>): string {
+function getPartColor(
+  partId: string,
+  parts: Record<string, PartInspection>,
+): string {
   const inspection = parts[partId];
   if (!inspection) return "#e2e8f0";
   return CONDITION_COLORS[inspection.condition as PartCondition] || "#e2e8f0";
@@ -147,12 +150,15 @@ export function VehicleDiagram({
 }: VehicleDiagramProps) {
   return (
     <div className="rounded-xl border bg-slate-50 p-4">
-
-      <VehicleSvg
-        parts={parts}
-        activePartId={activePartId}
-        onPartClick={onPartClick}
-      />
+      <div className="w-full flex justify-center items-center ">
+        <div className="w-[75%]">
+          <VehicleSvg
+            parts={parts}
+            activePartId={activePartId}
+            onPartClick={onPartClick}
+          />
+        </div>
+      </div>
 
       <div className="mt-4 flex flex-wrap gap-2 justify-center">
         {Object.entries(CONDITION_COLORS).map(([condition, color]) => (
@@ -179,7 +185,7 @@ export function PartLegend({
   className?: string;
 }) {
   const inspected = Object.entries(parts).filter(
-    ([, v]) => v.condition !== "good"
+    ([, v]) => v.condition !== "good",
   );
 
   if (inspected.length === 0) return null;
