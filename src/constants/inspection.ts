@@ -18,8 +18,15 @@ export const INSPECTION_STEPS = [
   { id: 15, key: "photos", label: "Photos" },
 ] as const;
 
+
+
 export const EXTERIOR_PARTS = [
   { id: "hood", label: "Hood" },
+  { id: "windshield", label: "Windshield" },
+  { id: "roof", label: "Roof" },
+  { id: "rear_glass", label: "Rear Glass" },
+  { id: "trunk", label: "Trunk" },
+  { id: "rear_panel", label: "Rear Panel" },
   { id: "front_bumper", label: "Front Bumper" },
   { id: "front_grille", label: "Front Grille" },
   { id: "left_fender", label: "Left Fender" },
@@ -30,15 +37,66 @@ export const EXTERIOR_PARTS = [
   { id: "right_rear_door", label: "Right Rear Door" },
   { id: "left_quarter", label: "Left Quarter Panel" },
   { id: "right_quarter", label: "Right Quarter Panel" },
-  { id: "roof", label: "Roof" },
-  { id: "trunk", label: "Trunk" },
   { id: "rear_bumper", label: "Rear Bumper" },
   { id: "left_mirror", label: "Left Mirror" },
   { id: "right_mirror", label: "Right Mirror" },
-  { id: "windshield", label: "Windshield" },
-  { id: "rear_glass", label: "Rear Glass" },
-  { id: "side_windows", label: "Side Windows" },
+// --- WINDOWS (SPLIT INTO 4) ---
+  { id: "left_front_window", label: "Left Front Window" },
+  { id: "left_rear_window", label: "Left Rear Window" },
+  { id: "right_front_window", label: "Right Front Window" },
+  { id: "right_rear_window", label: "Right Rear Window" },
+
+  // --- NEWLY ADDED PARTS ---
+  { id: "left_rocker_panel", label: "Left Rocker Panel" },
+  { id: "right_rocker_panel", label: "Right Rocker Panel" },
+  { id: "left_front_wheel", label: "Left Front Wheel" },
+  { id: "right_front_wheel", label: "Right Front Wheel" },
+  { id: "left_rear_wheel", label: "Left Rear Wheel" },
+  { id: "right_rear_wheel", label: "Right Rear Wheel" },
+  { id: "left_front_tire", label: "Left Front Tire" },
+  { id: "right_front_tire", label: "Right Front Tire" },
+  { id: "left_rear_tire", label: "Left Rear Tire" },
+  { id: "right_rear_tire", label: "Right Rear Tire" },
+  { id: "left_headlight", label: "Left Headlight" },
+  { id: "right_headlight", label: "Right Headlight" },
+  { id: "body_trim", label: "Body Trim" },
+  { id: "spare_wheel", label: "Spare Wheel" },
+  { id: "spare_tire", label: "Spare Tire" }
+
+
+
+
+
+
+
+
+
 ] as const;
+
+
+
+
+// export const EXTERIOR_PARTS = [
+//   { id: "hood", label: "Hood" },
+//   { id: "front_bumper", label: "Front Bumper" },
+//   { id: "front_grille", label: "Front Grille" },
+//   { id: "left_fender", label: "Left Fender" },
+//   { id: "right_fender", label: "Right Fender" },
+//   { id: "left_front_door", label: "Left Front Door" },
+//   { id: "right_front_door", label: "Right Front Door" },
+//   { id: "left_rear_door", label: "Left Rear Door" },
+//   { id: "right_rear_door", label: "Right Rear Door" },
+//   { id: "left_quarter", label: "Left Quarter Panel" },
+//   { id: "right_quarter", label: "Right Quarter Panel" },
+//   { id: "roof", label: "Roof" },
+//   { id: "trunk", label: "Trunk" },
+//   { id: "rear_bumper", label: "Rear Bumper" },
+//   { id: "left_mirror", label: "Left Mirror" },
+//   { id: "right_mirror", label: "Right Mirror" },
+//   { id: "windshield", label: "Windshield" },
+//   { id: "rear_glass", label: "Rear Glass" },
+//   { id: "side_windows", label: "Side Windows" },
+// ] as const;
 
 export const PART_CONDITIONS: { value: PartCondition; label: string }[] = [
   { value: "good", label: "Good" },

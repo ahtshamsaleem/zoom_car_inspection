@@ -187,7 +187,7 @@ export const Top = ({ parts, activePartId, onPartClick }: VehicleSvgProps) => {
           If you need pixel-perfect highlight coloring across these seams, you'll
           want to move individual fragments into the matching VehiclePart above
           after visually checking the rendered diagram. */}
-      <g fill="none" stroke="currentColor" strokeWidth="0.5" pointerEvents="none">
+      {/* <g fill="none" stroke="currentColor" strokeWidth="0.5" pointerEvents="none">
         <path d="M205.67,108.09l48.97,0.05c-9.55-0.45-42.94-1.55-87.75,2.08c0,0-1.1,0.07-2.8,0.54 c5.66-1.33,41.54-2.67,41.54-2.67L205.67,108.09z" />
         <path d="M288.67,112.75c-0.6-0.21-1.23-0.42-1.91-0.62c-3.06-0.92-6.9-1.76-11.71-2.43 C282.59,110.98,288.06,112.57,288.67,112.75z" />
         <path d="M235.14,189.35l-15.34,0.01C224.76,189.38,229.9,189.38,235.14,189.35z" />
@@ -220,7 +220,7 @@ export const Top = ({ parts, activePartId, onPartClick }: VehicleSvgProps) => {
         <path d="M105.67,188.4l0.03,0c-0.32-0.17-0.63-0.35-0.94-0.53C105.07,188.05,105.36,188.23,105.67,188.4z" />
         <path d="M103.77,111c-0.03,0.02-0.06,0.04-0.1,0.06C103.7,111.04,103.74,111.02,103.77,111L103.77,111z" />
         <path d="M102.42,186.38c-0.66-0.46-1.28-0.94-1.87-1.42C101.14,185.44,101.76,185.92,102.42,186.38z" />
-      </g>
+      </g> */}
     </>
   );
 };
