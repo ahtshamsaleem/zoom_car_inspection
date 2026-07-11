@@ -21,6 +21,7 @@ export const INSPECTION_STEPS = [
 
 
 export const EXTERIOR_PARTS = [
+  // --- PREVIOUS PARTS (UNCHANGED) ---
   { id: "hood", label: "Hood" },
   { id: "windshield", label: "Windshield" },
   { id: "roof", label: "Roof" },
@@ -59,11 +60,17 @@ export const EXTERIOR_PARTS = [
   { id: "right_rear_tire", label: "Right Rear Tire" },
   { id: "left_headlight", label: "Left Headlight" },
   { id: "right_headlight", label: "Right Headlight" },
+  { id: "left_taillight", label: "Left Taillight" },
+  { id: "right_taillight", label: "Right Taillight" },
   { id: "body_trim", label: "Body Trim" },
   { id: "spare_wheel", label: "Spare Wheel" },
-  { id: "spare_tire", label: "Spare Tire" }
+  { id: "spare_tire", label: "Spare Tire" },
 
+  { id: "left_side_roof_rails", label: "Left Side Roof Rails" },
+  { id: "right_side_roof_rails", label: "Right Side Roof Rails" }, 
 
+  { id: "left_side_front_pillar", label: "Left Side Front Pillar" },
+  { id: "right_side_front_pillar", label: "Right Side Front Pillar" },
 
 
 
@@ -116,7 +123,8 @@ export const SEVERITY_OPTIONS = [
 ] as const;
 
 export const CONDITION_COLORS: Record<PartCondition, string> = {
-  good: "#22c55e",
+  good: "#ffffff",
+  // good: "#22c55e",
   scratch: "#eab308",
   dent: "#f97316",
   crack: "#ef4444",

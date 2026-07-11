@@ -16,7 +16,8 @@ export const VehicleSvg = ({ parts, activePartId, onPartClick }: VehicleSvgProps
       className="w-full h-full"
     >
       {/* non-interactive shapes with no exterior-part mapping yet */}
-      <g pointerEvents="none" fill="#E2E8F0" dangerouslySetInnerHTML={{ __html: VEHICLE_STATIC_MARKUP }} />
+      <g pointerEvents="none" fill="#fff"  stroke="#616161"
+        strokeWidth={  1} dangerouslySetInnerHTML={{ __html: VEHICLE_STATIC_MARKUP }} />
 
       {EXTERIOR_PARTS.map(({ id }) => {
         const markup = VEHICLE_PART_MARKUP[id];

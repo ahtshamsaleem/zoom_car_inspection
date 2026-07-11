@@ -31,24 +31,24 @@ export function VehiclePart({
     <motion.g
       id={id}
       initial={false}
-      whileHover={{ scale: 1.02 }}
-      animate={{
-        scale: active ? 1.02 : 1,
-      }}
       style={{
         transformOrigin: "center",
         cursor: "pointer",
       }}
       onClick={() => onPartClick(id)}
     >
-      <g
-        fill={fill}
-        fillOpacity={condition === "good" ? 0.6 : 0.9}
-        stroke={active ? "#2563EB" : "#64748B"}
-        strokeWidth={active ? 3 : 1}
+      <motion.g
+        animate={{
+          fill,
+          stroke:  "#616161",
+          // strokeWidth: active ? 2 : 1,
+        }}
+        whileHover={{ fill: "#93C5FD",  }}
+        transition={{ duration: 0.15 }}
+        style={{ transformOrigin: "center" }}
       >
         {children}
-      </g>
+      </motion.g>
 
       <title>{id.replace(/_/g, " ")}</title>
     </motion.g>
