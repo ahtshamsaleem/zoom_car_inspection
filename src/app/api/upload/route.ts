@@ -1,9 +1,32 @@
 import { NextResponse } from "next/server";
+import axios from "axios";
+
+interface UploadResponse {
+  success: boolean;
+  url: string;
+  filename: string;
+  size: number;
+  mime: string;
+}
+
+
+const UPLOAD_API_URL = process.env.UPLOAD_API_URL;
+const UPLOAD_API_KEY = process.env.UPLOAD_API_KEY;
+
+
+
 
 export async function POST(request: Request) {
   try {
+    if (!UPLOAD_API_URL || !UPLOAD_API_KEY) {
+      console.error("Missing UPLOAD_API_URL or UPLOAD_API_KEY env var");
+      return NextResponse.json(
+        { error: "Server misconfigured" },
+        { status: 500 }
+      );
+    }
     const formData = await request.formData();
-    const file = formData.get("file") as File | null;
+    const file = formData.get("image") as File | null;
 
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
@@ -25,22 +48,32 @@ export async function POST(request: Request) {
       );
     }
 
-    // Dummy upload API — replace with your real image upload service
-    const timestamp = Date.now();
-    const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
-    const url = `https://picsum.photos/seed/${timestamp}-${safeName}/800/600`;
 
-    return NextResponse.json({
-      success: true,
-      url,
-      filename: safeName,
-      size: file.size,
-      type: file.type,
-    });
-  } catch {
-    return NextResponse.json(
-      { error: "Upload failed" },
-      { status: 500 }
-    );
+    
+const uploadRes = await axios.post<UploadResponse>(UPLOAD_API_URL, formData, {
+  headers: {
+ 
+    "x-api-key": UPLOAD_API_KEY,
+  },
+  maxBodyLength: Infinity,
+});
+
+const data = uploadRes.data; // typed as UploadResponse
+
+return NextResponse.json({
+  success: true,
+  url: data.url,
+  filename: data.filename,
+  size: data.size,
+  type: data.mime,
+});
+  } catch (err) {
+    console.log("ERROR", err)
+    if (axios.isAxiosError(err)) {
+      console.error("Upload API error:", err.response?.status, err.response?.data);
+    } else {
+      console.error("Upload route error:", err);
+    }
+    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }

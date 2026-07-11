@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import axios from "axios";
+import { toast } from "sonner";
 import { Loader2, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -26,16 +28,34 @@ export function PhotoUpload({
       setUploading(true);
 
       const newUrls: string[] = [];
-      for (const file of Array.from(files)) {
-        const formData = new FormData();
-        formData.append("file", file);
-        const res = await fetch("/api/upload", { method: "POST", body: formData });
-        const data = await res.json();
-        if (data.url) newUrls.push(data.url);
-      }
+      try {
+        for (const file of Array.from(files)) {
+          const formData = new FormData();
+          formData.append("image", file);
 
-      onChange(multiple ? [...value, ...newUrls] : newUrls);
-      setUploading(false);
+          const { data } = await axios.post("/api/upload", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+
+          if (data.url) {
+            newUrls.push(data.url);
+          } else {
+            toast.error(`Failed to upload ${file.name}`);
+          }
+        }
+
+        if (newUrls.length) {
+          onChange(multiple ? [...value, ...newUrls] : newUrls);
+        }
+      } catch (error) {
+        const message =
+          axios.isAxiosError(error) && error.response?.data?.message
+            ? error.response.data.message
+            : "Something went wrong while uploading. Please try again.";
+        toast.error(message);
+      } finally {
+        setUploading(false);
+      }
     },
     [value, onChange, multiple]
   );

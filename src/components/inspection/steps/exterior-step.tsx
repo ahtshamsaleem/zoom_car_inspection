@@ -57,7 +57,7 @@ export function ExteriorStep() {
       <Tabs defaultValue="top">
         <TabsList>
           <TabsTrigger value="top">Top-Down View</TabsTrigger>
-          <TabsTrigger value="side">Side View</TabsTrigger>
+          {/* <TabsTrigger value="side">Side View</TabsTrigger> */}
           <TabsTrigger value="list">Panel List</TabsTrigger>
         </TabsList>
 
@@ -70,14 +70,14 @@ export function ExteriorStep() {
           />
         </TabsContent>
 
-        <TabsContent value="side" className="mt-4">
+        {/* <TabsContent value="side" className="mt-4">
           <VehicleDiagram
             parts={exterior}
             activePartId={activePartId}
             onPartClick={handlePartClick}
             view="side"
           />
-        </TabsContent>
+        </TabsContent> */}
 
         <TabsContent value="list" className="mt-4">
           <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">

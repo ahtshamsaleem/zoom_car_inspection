@@ -4,7 +4,7 @@ import { EXTERIOR_PARTS } from "@/constants/inspection";
 import { VehicleSvgProps } from "./types";
 
 // pull this from the root <svg viewBox="..."> of your actual vehicle-clean.svg
-const VIEW_BOX = "0 0 2000 2000";
+const VIEW_BOX = "0 0 2000 1200";
 
 export const VehicleSvg = ({ parts, activePartId, onPartClick }: VehicleSvgProps) => {
   return (
