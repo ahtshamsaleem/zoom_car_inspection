@@ -215,5 +215,12 @@
     "manual": "Manual",
     "cvt": "CVT",
     "dct": "DCT"
-  }
+  },
+
+
+  "checklistStatus": {
+  "good": "Good",
+  "issue": "Issue",
+  "na": "N/A"
+}
 }

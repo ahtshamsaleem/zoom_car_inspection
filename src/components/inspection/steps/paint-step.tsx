@@ -7,9 +7,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { EXTERIOR_PARTS } from "@/constants/inspection";
 import { useInspectionStore } from "@/stores/inspection-store";
+import { useTranslation } from "@/hooks/use-translation";
 import type { PaintPanelInspection } from "@/types";
 
 export function PaintStep() {
+  const { t } = useTranslation();
   const { paint, setPaintPanel } = useInspectionStore();
 
   const updatePanel = (panelId: string, field: keyof PaintPanelInspection, value: unknown) => {
@@ -22,9 +24,9 @@ export function PaintStep() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold">Paint Inspection</h2>
+        <h2 className="text-xl font-semibold">{t("steps.paintStep.title")}</h2>
         <p className="text-sm text-muted-foreground">
-          Record paint condition and thickness readings for each panel
+          {t("steps.paintStep.subtitle")}
         </p>
       </div>
 
@@ -32,13 +34,16 @@ export function PaintStep() {
         {EXTERIOR_PARTS.map((panel) => {
           const data = paint[panel.id] || {};
           const hasRepaint = data.repainted || data.bodyFiller;
+          const panelLabel = t(`constants.parts.${panel.id}`) || panel.label;
 
           return (
             <Card key={panel.id}>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-base">{panel.label}</CardTitle>
-                  {hasRepaint && <Badge variant="destructive">Repaint detected</Badge>}
+                  <CardTitle className="text-base">{panelLabel}</CardTitle>
+                  {hasRepaint && (
+                    <Badge variant="destructive">{t("steps.paintStep.repaintDetected")}</Badge>
+                  )}
                 </div>
               </CardHeader>
               <CardContent className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -51,7 +56,7 @@ export function PaintStep() {
                     }
                   />
                   <Label htmlFor={`${panel.id}-original`} className="font-normal">
-                    Original Paint
+                    {t("steps.paintStep.originalPaint")}
                   </Label>
                 </div>
                 <div className="flex items-center gap-2">
@@ -61,7 +66,7 @@ export function PaintStep() {
                     onCheckedChange={(v) => updatePanel(panel.id, "repainted", !!v)}
                   />
                   <Label htmlFor={`${panel.id}-repainted`} className="font-normal">
-                    Repainted
+                    {t("steps.paintStep.repainted")}
                   </Label>
                 </div>
                 <div className="flex items-center gap-2">
@@ -71,11 +76,11 @@ export function PaintStep() {
                     onCheckedChange={(v) => updatePanel(panel.id, "bodyFiller", !!v)}
                   />
                   <Label htmlFor={`${panel.id}-filler`} className="font-normal">
-                    Body Filler
+                    {t("steps.paintStep.bodyFiller")}
                   </Label>
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs">Micron Reading</Label>
+                  <Label className="text-xs">{t("steps.paintStep.micronReading")}</Label>
                   <Input
                     type="number"
                     placeholder="μm"

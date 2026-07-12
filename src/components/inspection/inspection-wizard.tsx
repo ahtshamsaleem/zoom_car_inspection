@@ -31,6 +31,9 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
   const totalSteps = INSPECTION_STEPS.length;
   const progress = (currentStep / totalSteps) * 100;
 
+  const getStepLabel = (step: (typeof INSPECTION_STEPS)[number]) =>
+    t(`constants.inspectionSteps.${step.key}`) || step.label;
+
   const saveInspection = useCallback(
     async (status: "draft" | "in_progress" | "completed" = "in_progress") => {
       setSaving(true);
@@ -213,8 +216,7 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
                 .replace("{total}", String(totalSteps))}
             </p>
             <h1 className="text-lg font-semibold">
-              {/* TODO: comes from INSPECTION_STEPS constant — still English, see note above */}
-              {INSPECTION_STEPS[currentStep - 1]?.label}
+              {getStepLabel(INSPECTION_STEPS[currentStep - 1])}
             </h1>
           </div>
           <Button
@@ -241,8 +243,7 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
                     : "bg-muted text-muted-foreground"
               }`}
             >
-              {/* TODO: same INSPECTION_STEPS dependency as above */}
-              {step.label}
+              {getStepLabel(step)}
             </button>
           ))}
         </div>

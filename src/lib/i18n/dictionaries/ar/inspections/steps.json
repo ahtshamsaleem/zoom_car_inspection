@@ -1,0 +1,68 @@
+{
+  "checklistStep": {
+    "selectStatusPlaceholder": "اختر الحالة",
+    "issueDescriptionPlaceholder": "صف المشكلة...",
+    "issuesCount": "{count} مشاكل"
+  },
+  "customerStep": {
+    "title": "معلومات العميل",
+    "subtitle": "أدخل بيانات العميل لهذا الفحص",
+    "name": { "label": "اسم العميل *", "placeholder": "الاسم الكامل" },
+    "mobile": { "label": "رقم الجوال *", "placeholder": "+971 50 123 4567" },
+    "email": { "label": "البريد الإلكتروني", "placeholder": "email@example.com" },
+    "emiratesId": { "label": "الهوية الإماراتية (اختياري)", "placeholder": "784-XXXX-XXXXXXX-X" }
+  },
+
+  "exteriorStep": {
+    "title": "فحص الهيكل الخارجي",
+    "subtitle": "انقر على أجزاء المركبة لفحص حالتها",
+    "inspectedCount": "{count} تم فحصها",
+    "issuesCount": "{count} مشاكل",
+    "tabs": { "topView": "عرض علوي", "list": "قائمة الأجزاء" },
+    "notInspected": "لم يتم الفحص"
+  },
+  "paintStep": {
+    "title": "فحص الطلاء",
+    "subtitle": "سجّل حالة الطلاء وقراءات السماكة لكل جزء",
+    "repaintDetected": "تم اكتشاف إعادة طلاء",
+    "originalPaint": "طلاء أصلي",
+    "repainted": "معاد طلاؤه",
+    "bodyFiller": "معجون هيكل",
+    "micronReading": "قراءة السماكة (ميكرون)"
+  },
+   "photosStep": {
+    "title": "صور المركبة",
+    "subtitle": "قم برفع الصور من جميع الزوايا والمناطق المطلوبة"
+  },
+  "tiresStep": {
+    "title": "فحص الإطارات",
+    "subtitle": "افحص كل عجلة للتحقق من التآكل والأضرار والمواصفات",
+    "brand": { "label": "الماركة", "placeholder": "ميشلان" },
+    "size": { "label": "المقاس", "placeholder": "225/45R17" },
+    "dot": { "label": "رقم DOT" },
+    "remainingPercent": { "label": "النسبة المتبقية %" },
+    "fields": {
+      "unevenWear": "تآكل غير منتظم",
+      "sidewallDamage": "ضرر بالجدار الجانبي",
+      "cracks": "تشققات"
+    }
+  },
+  "vehicleStep": {
+    "title": "معلومات المركبة",
+    "subtitle": "أدخل بيانات المركبة لتقرير الفحص",
+    "plateNumber": { "label": "رقم اللوحة *", "placeholder": "A 12345" },
+    "vin": { "label": "رقم الهيكل (VIN)", "placeholder": "رقم VIN مكون من 17 حرفًا" },
+    "chassisNumber": { "label": "رقم الشاسيه" },
+    "make": { "label": "الشركة المصنعة", "placeholder": "تويوتا" },
+    "model": { "label": "الموديل", "placeholder": "كامري" },
+    "trim": { "label": "الفئة", "placeholder": "SE" },
+    "year": { "label": "سنة الصنع", "placeholder": "2024" },
+    "mileage": { "label": "المسافة المقطوعة (كم)", "placeholder": "50000" },
+    "engineSize": { "label": "سعة المحرك", "placeholder": "2.5L" },
+    "fuelType": { "label": "نوع الوقود", "placeholder": "اختر نوع الوقود" },
+    "transmission": { "label": "ناقل الحركة", "placeholder": "اختر ناقل الحركة" },
+    "color": { "label": "اللون", "placeholder": "أبيض" }
+  }
+ 
+
+}

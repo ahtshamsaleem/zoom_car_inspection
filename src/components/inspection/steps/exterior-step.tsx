@@ -8,9 +8,11 @@ import { EXTERIOR_PARTS } from "@/constants/inspection";
 import { VehicleDiagram, PartLegend } from "@/components/inspection/vehicle-diagram";
 import { PartInspectionDialog } from "@/components/inspection/part-inspection-dialog";
 import { useInspectionStore } from "@/stores/inspection-store";
+import { useTranslation } from "@/hooks/use-translation";
 import type { PartInspection } from "@/types";
 
 export function ExteriorStep() {
+  const { t } = useTranslation();
   const { exterior, setExteriorPart, setActivePartId, activePartId } =
     useInspectionStore();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -29,8 +31,10 @@ export function ExteriorStep() {
     setActivePartId(null);
   };
 
-  const selectedLabel =
-    EXTERIOR_PARTS.find((p) => p.id === selectedPart)?.label || "";
+  const selectedPartRaw = EXTERIOR_PARTS.find((p) => p.id === selectedPart);
+  const selectedLabel = selectedPart
+    ? t(`constants.parts.${selectedPart}`) || selectedPartRaw?.label || ""
+    : "";
 
   const inspectedCount = Object.keys(exterior).length;
   const issueCount = Object.values(exterior).filter(
@@ -41,24 +45,28 @@ export function ExteriorStep() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold">Exterior Inspection</h2>
+          <h2 className="text-xl font-semibold">{t("steps.exteriorStep.title")}</h2>
           <p className="text-sm text-muted-foreground">
-            Click on vehicle panels to inspect condition
+            {t("steps.exteriorStep.subtitle")}
           </p>
         </div>
         <div className="flex gap-2">
-          <Badge variant="secondary">{inspectedCount} inspected</Badge>
+          <Badge variant="secondary">
+            {t("steps.exteriorStep.inspectedCount").replace("{count}", String(inspectedCount))}
+          </Badge>
           {issueCount > 0 && (
-            <Badge variant="destructive">{issueCount} issues</Badge>
+            <Badge variant="destructive">
+              {t("steps.exteriorStep.issuesCount").replace("{count}", String(issueCount))}
+            </Badge>
           )}
         </div>
       </div>
 
       <Tabs defaultValue="top">
         <TabsList>
-          <TabsTrigger value="top">Top-Down View</TabsTrigger>
+          <TabsTrigger value="top">{t("steps.exteriorStep.tabs.topView")}</TabsTrigger>
           {/* <TabsTrigger value="side">Side View</TabsTrigger> */}
-          <TabsTrigger value="list">Panel List</TabsTrigger>
+          <TabsTrigger value="list">{t("steps.exteriorStep.tabs.list")}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="top" className="mt-4">
@@ -84,6 +92,7 @@ export function ExteriorStep() {
             {EXTERIOR_PARTS.map((part) => {
               const data = exterior[part.id];
               const hasIssue = data && data.condition !== "good";
+              const partLabel = t(`constants.parts.${part.id}`) || part.label;
               return (
                 <Card
                   key={part.id}
@@ -91,13 +100,13 @@ export function ExteriorStep() {
                   onClick={() => handlePartClick(part.id)}
                 >
                   <CardContent className="flex items-center justify-between p-4">
-                    <span className="text-sm font-medium">{part.label}</span>
+                    <span className="text-sm font-medium">{partLabel}</span>
                     {data ? (
                       <Badge variant={hasIssue ? "destructive" : "default"}>
-                        {data.condition}
+                        {t(`constants.conditions.${data.condition}`)}
                       </Badge>
                     ) : (
-                      <Badge variant="outline">Not inspected</Badge>
+                      <Badge variant="outline">{t("steps.exteriorStep.notInspected")}</Badge>
                     )}
                   </CardContent>
                 </Card>

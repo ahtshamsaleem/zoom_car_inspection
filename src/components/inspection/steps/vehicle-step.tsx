@@ -14,8 +14,10 @@ import {
 import { vehicleSchema, type VehicleFormValues } from "@/lib/validations/schemas";
 import { FUEL_TYPES, TRANSMISSION_TYPES } from "@/constants/inspection";
 import { useInspectionStore } from "@/stores/inspection-store";
+import { useTranslation } from "@/hooks/use-translation";
 
 export function VehicleStep() {
+  const { t } = useTranslation();
   const { vehicle, setVehicle } = useInspectionStore();
 
   const form = useForm<VehicleFormValues>({
@@ -34,33 +36,33 @@ export function VehicleStep() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold">Vehicle Information</h2>
+        <h2 className="text-xl font-semibold">{t("steps.vehicleStep.title")}</h2>
         <p className="text-sm text-muted-foreground">
-          Enter vehicle details for the inspection report
+          {t("steps.vehicleStep.subtitle")}
         </p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div className="space-y-2">
-          <Label htmlFor="plateNumber">Plate Number *</Label>
+          <Label htmlFor="plateNumber">{t("steps.vehicleStep.plateNumber.label")}</Label>
           <Input
             id="plateNumber"
             {...form.register("plateNumber")}
             onChange={(e) => onFieldChange("plateNumber", e.target.value)}
-            placeholder="A 12345"
+            placeholder={t("steps.vehicleStep.plateNumber.placeholder")}
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="vin">VIN</Label>
+          <Label htmlFor="vin">{t("steps.vehicleStep.vin.label")}</Label>
           <Input
             id="vin"
             {...form.register("vin")}
             onChange={(e) => onFieldChange("vin", e.target.value)}
-            placeholder="17-character VIN"
+            placeholder={t("steps.vehicleStep.vin.placeholder")}
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="chassisNumber">Chassis Number</Label>
+          <Label htmlFor="chassisNumber">{t("steps.vehicleStep.chassisNumber.label")}</Label>
           <Input
             id="chassisNumber"
             {...form.register("chassisNumber")}
@@ -68,34 +70,34 @@ export function VehicleStep() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="make">Make</Label>
+          <Label htmlFor="make">{t("steps.vehicleStep.make.label")}</Label>
           <Input
             id="make"
             {...form.register("make")}
             onChange={(e) => onFieldChange("make", e.target.value)}
-            placeholder="Toyota"
+            placeholder={t("steps.vehicleStep.make.placeholder")}
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="model">Model</Label>
+          <Label htmlFor="model">{t("steps.vehicleStep.model.label")}</Label>
           <Input
             id="model"
             {...form.register("model")}
             onChange={(e) => onFieldChange("model", e.target.value)}
-            placeholder="Camry"
+            placeholder={t("steps.vehicleStep.model.placeholder")}
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="trim">Trim</Label>
+          <Label htmlFor="trim">{t("steps.vehicleStep.trim.label")}</Label>
           <Input
             id="trim"
             {...form.register("trim")}
             onChange={(e) => onFieldChange("trim", e.target.value)}
-            placeholder="SE"
+            placeholder={t("steps.vehicleStep.trim.placeholder")}
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="year">Year</Label>
+          <Label htmlFor="year">{t("steps.vehicleStep.year.label")}</Label>
           <Input
             id="year"
             type="number"
@@ -103,11 +105,11 @@ export function VehicleStep() {
             onChange={(e) =>
               onFieldChange("year", e.target.value ? Number(e.target.value) : undefined)
             }
-            placeholder="2024"
+            placeholder={t("steps.vehicleStep.year.placeholder")}
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="mileage">Mileage (km)</Label>
+          <Label htmlFor="mileage">{t("steps.vehicleStep.mileage.label")}</Label>
           <Input
             id="mileage"
             type="number"
@@ -115,61 +117,61 @@ export function VehicleStep() {
             onChange={(e) =>
               onFieldChange("mileage", e.target.value ? Number(e.target.value) : undefined)
             }
-            placeholder="50000"
+            placeholder={t("steps.vehicleStep.mileage.placeholder")}
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="engineSize">Engine Size</Label>
+          <Label htmlFor="engineSize">{t("steps.vehicleStep.engineSize.label")}</Label>
           <Input
             id="engineSize"
             {...form.register("engineSize")}
             onChange={(e) => onFieldChange("engineSize", e.target.value)}
-            placeholder="2.5L"
+            placeholder={t("steps.vehicleStep.engineSize.placeholder")}
           />
         </div>
         <div className="space-y-2">
-          <Label>Fuel Type</Label>
+          <Label>{t("steps.vehicleStep.fuelType.label")}</Label>
           <Select
             value={vehicle.fuelType || ""}
             onValueChange={(v) => onFieldChange("fuelType", v ?? undefined)}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select fuel type" />
+              <SelectValue placeholder={t("steps.vehicleStep.fuelType.placeholder")} />
             </SelectTrigger>
             <SelectContent>
-              {FUEL_TYPES.map((t) => (
-                <SelectItem key={t} value={t}>
-                  {t}
+              {FUEL_TYPES.map((fuelType) => (
+                <SelectItem key={fuelType.key} value={fuelType.label}>
+                  {t(`constants.fuelTypes.${fuelType.key}`)}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
         <div className="space-y-2">
-          <Label>Transmission</Label>
+          <Label>{t("steps.vehicleStep.transmission.label")}</Label>
           <Select
             value={vehicle.transmission || ""}
             onValueChange={(v) => onFieldChange("transmission", v ?? undefined)}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select transmission" />
+              <SelectValue placeholder={t("steps.vehicleStep.transmission.placeholder")} />
             </SelectTrigger>
             <SelectContent>
-              {TRANSMISSION_TYPES.map((t) => (
-                <SelectItem key={t} value={t}>
-                  {t}
+              {TRANSMISSION_TYPES.map((transmissionType) => (
+                <SelectItem key={transmissionType.key} value={transmissionType.label}>
+                  {t(`constants.transmissionTypes.${transmissionType.key}`)}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="color">Color</Label>
+          <Label htmlFor="color">{t("steps.vehicleStep.color.label")}</Label>
           <Input
             id="color"
             {...form.register("color")}
             onChange={(e) => onFieldChange("color", e.target.value)}
-            placeholder="White"
+            placeholder={t("steps.vehicleStep.color.placeholder")}
           />
         </div>
       </div>

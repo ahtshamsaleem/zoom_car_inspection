@@ -1,0 +1,65 @@
+{
+  "checklistStep": {
+    "selectStatusPlaceholder": "Select status",
+    "issueDescriptionPlaceholder": "Describe the issue...",
+    "issuesCount": "{count} issues"
+  },
+  "customerStep": {
+    "title": "Customer Information",
+    "subtitle": "Enter the customer details for this inspection",
+    "name": { "label": "Customer Name *", "placeholder": "Full name" },
+    "mobile": { "label": "Mobile Number *", "placeholder": "+971 50 123 4567" },
+    "email": { "label": "Email", "placeholder": "email@example.com" },
+    "emiratesId": { "label": "Emirates ID (optional)", "placeholder": "784-XXXX-XXXXXXX-X" }
+  },
+  "exteriorStep": {
+    "title": "Exterior Inspection",
+    "subtitle": "Click on vehicle panels to inspect condition",
+    "inspectedCount": "{count} inspected",
+    "issuesCount": "{count} issues",
+    "tabs": { "topView": "Top-Down View", "list": "Panel List" },
+    "notInspected": "Not inspected"
+  },
+   "paintStep": {
+    "title": "Paint Inspection",
+    "subtitle": "Record paint condition and thickness readings for each panel",
+    "repaintDetected": "Repaint detected",
+    "originalPaint": "Original Paint",
+    "repainted": "Repainted",
+    "bodyFiller": "Body Filler",
+    "micronReading": "Micron Reading"
+  },
+  "photosStep": {
+    "title": "Vehicle Photos",
+    "subtitle": "Upload photos from all required angles and areas"
+  },
+  "tiresStep": {
+    "title": "Tire Inspection",
+    "subtitle": "Inspect each wheel for wear, damage, and specifications",
+    "brand": { "label": "Brand", "placeholder": "Michelin" },
+    "size": { "label": "Size", "placeholder": "225/45R17" },
+    "dot": { "label": "DOT" },
+    "remainingPercent": { "label": "Remaining %" },
+    "fields": {
+      "unevenWear": "Uneven Wear",
+      "sidewallDamage": "Sidewall Damage",
+      "cracks": "Cracks"
+    }
+  },
+  "vehicleStep": {
+    "title": "Vehicle Information",
+    "subtitle": "Enter vehicle details for the inspection report",
+    "plateNumber": { "label": "Plate Number *", "placeholder": "A 12345" },
+    "vin": { "label": "VIN", "placeholder": "17-character VIN" },
+    "chassisNumber": { "label": "Chassis Number" },
+    "make": { "label": "Make", "placeholder": "Toyota" },
+    "model": { "label": "Model", "placeholder": "Camry" },
+    "trim": { "label": "Trim", "placeholder": "SE" },
+    "year": { "label": "Year", "placeholder": "2024" },
+    "mileage": { "label": "Mileage (km)", "placeholder": "50000" },
+    "engineSize": { "label": "Engine Size", "placeholder": "2.5L" },
+    "fuelType": { "label": "Fuel Type", "placeholder": "Select fuel type" },
+    "transmission": { "label": "Transmission", "placeholder": "Select transmission" },
+    "color": { "label": "Color", "placeholder": "White" }
+  }
+}

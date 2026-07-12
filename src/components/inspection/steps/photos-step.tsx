@@ -4,16 +4,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PHOTO_CATEGORIES } from "@/constants/inspection";
 import { PhotoUpload } from "@/components/inspection/photo-upload";
 import { useInspectionStore } from "@/stores/inspection-store";
+import { useTranslation } from "@/hooks/use-translation";
 
 export function PhotosStep() {
+  const { t } = useTranslation();
   const { photos, addPhoto, removePhoto } = useInspectionStore();
 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold">Vehicle Photos</h2>
+        <h2 className="text-xl font-semibold">{t("steps.photosStep.title")}</h2>
         <p className="text-sm text-muted-foreground">
-          Upload photos from all required angles and areas
+          {t("steps.photosStep.subtitle")}
         </p>
       </div>
 
@@ -21,7 +23,9 @@ export function PhotosStep() {
         {PHOTO_CATEGORIES.map((cat) => (
           <Card key={cat.key}>
             <CardHeader className="pb-3">
-              <CardTitle className="text-base">{cat.label}</CardTitle>
+              <CardTitle className="text-base">
+                {t(`constants.photoCategories.${cat.key}`) || cat.label}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <PhotoUpload
