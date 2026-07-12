@@ -131,7 +131,7 @@ export function VehicleStep() {
           <Label>Fuel Type</Label>
           <Select
             value={vehicle.fuelType || ""}
-            onValueChange={(v) => onFieldChange("fuelType", v)}
+            onValueChange={(v) => onFieldChange("fuelType", v ?? undefined)}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select fuel type" />
@@ -149,7 +149,7 @@ export function VehicleStep() {
           <Label>Transmission</Label>
           <Select
             value={vehicle.transmission || ""}
-            onValueChange={(v) => onFieldChange("transmission", v)}
+            onValueChange={(v) => onFieldChange("transmission", v ?? undefined)}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select transmission" />

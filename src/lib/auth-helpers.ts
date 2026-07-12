@@ -31,7 +31,7 @@ export function requireAuth(
   return null;
 }
 
-export function requireManager(auth: { profile: Profile } | null) {
+export function requireManager(auth: { user: { id: string }; profile: Profile } | null) {
   const unauthorized = requireAuth(auth);
   if (unauthorized) return unauthorized;
 
@@ -41,7 +41,7 @@ export function requireManager(auth: { profile: Profile } | null) {
   return null;
 }
 
-export function requireCompany(auth: { profile: Profile } | null) {
+export function requireCompany(auth: { user: { id: string }; profile: Profile } | null) {
   const unauthorized = requireAuth(auth);
   if (unauthorized) return unauthorized;
 

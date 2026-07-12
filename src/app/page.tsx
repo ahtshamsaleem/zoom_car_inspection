@@ -2,8 +2,14 @@ import Link from "next/link";
 import { Car, ClipboardCheck, BarChart3, Shield } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { redirect } from "next/navigation";
 
 export default function HomePage() {
+  redirect("/dashboard");
+
+
+
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white">
       <header className="container mx-auto flex items-center justify-between px-6 py-6">

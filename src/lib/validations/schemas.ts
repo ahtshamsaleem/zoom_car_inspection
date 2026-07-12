@@ -60,9 +60,9 @@ export const updateEmployeeSchema = z.object({
 
 
 export type LoginFormValues = z.infer<typeof loginSchema>;
-export type SignupFormValues = z.infer<typeof signupSchema>;
+export type SignupFormValues = z.input<typeof signupSchema>;
 export type CustomerFormValues = z.infer<typeof customerSchema>;
-export type VehicleFormValues = z.infer<typeof vehicleSchema>;
+export type VehicleFormValues = z.input<typeof vehicleSchema>;
 
 export type EmployeeFormValues = z.infer<typeof employeeSchema>;
 export type UpdateEmployeeFormValues = z.infer<typeof updateEmployeeSchema>;
