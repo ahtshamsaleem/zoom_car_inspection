@@ -1,0 +1,23 @@
+ {
+  "groups": {
+    "management": "Management",
+    "inspector": "Inspector"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "allInspections": "All Inspections",
+    "employees": "Employees",
+    "customers": "Customers",
+    "analytics": "Analytics",
+    "templates": "Templates",
+    "pricing": "Pricing",
+    "settings": "Settings",
+    "newInspection": "New Inspection",
+    "todayInspections": "Today's Inspections"
+  },
+  "roles": {
+    "manager": "Manager",
+    "inspector": "Inspector"
+  },
+  "logout": "Log out"
+}

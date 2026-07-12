@@ -5,6 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { LanguageProvider } from "@/components/providers/language-provider";
+import { LanguageScript } from "@/components/language/language-script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,11 +35,13 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
       className={`${geistSans.variable}    ${inter.variable} h-full antialiased `}
-    >
+    ><head>
+        <LanguageScript />
+      </head>
       <body className="min-h-full flex flex-col">
     <ThemeProvider>
         <TooltipProvider>
-            {children}
+            <LanguageProvider>{children}</LanguageProvider> 
             <Toaster richColors position="top-right" />
         </TooltipProvider>
     </ThemeProvider>

@@ -1,0 +1,24 @@
+
+{
+  "groups": {
+    "management": "الإدارة",
+    "inspector": "الفاحص"
+  },
+  "nav": {
+    "dashboard": "لوحة التحكم",
+    "allInspections": "جميع عمليات الفحص",
+    "employees": "الموظفون",
+    "customers": "العملاء",
+    "analytics": "التحليلات",
+    "templates": "القوالب",
+    "pricing": "الأسعار",
+    "settings": "الإعدادات",
+    "newInspection": "فحص جديد",
+    "todayInspections": "فحوصات اليوم"
+  },
+  "roles": {
+    "manager": "مدير",
+    "inspector": "فاحص"
+  },
+  "logout": "تسجيل الخروج"
+}
