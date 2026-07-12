@@ -1,0 +1,13 @@
+ 
+{
+  "title": "Customer Database",
+  "subtitle": "View all customers and their inspection history",
+  "searchPlaceholder": "Search customers...",
+  "table": {
+    "name": "Name",
+    "mobile": "Mobile",
+    "email": "Email",
+    "emiratesId": "Emirates ID",
+    "empty": "No customers found"
+  }
+}

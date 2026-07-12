@@ -16,6 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useTranslation } from "@/hooks/use-translation";
 
 interface InspectionRow {
   id: string;
@@ -26,7 +27,14 @@ interface InspectionRow {
   profiles?: { full_name?: string };
 }
 
+const localeTag: Record<string, string> = {
+  en: "en-US",
+  es: "es-ES",
+  ar: "ar-AE",
+};
+
 export default function InspectionsPage() {
+  const { t, locale } = useTranslation();
   const searchParams = useSearchParams();
   const today = searchParams.get("today");
   const [inspections, setInspections] = useState<InspectionRow[]>([]);
@@ -45,31 +53,31 @@ export default function InspectionsPage() {
       .finally(() => setLoading(false));
   }, [today, search]);
 
+  const tag = localeTag[locale] ?? "en-US";
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold">
-            {today ? "Today's Inspections" : "All Inspections"}
+            {today ? t("inspections.titleToday") : t("inspections.titleAll")}
           </h1>
-          <p className="text-muted-foreground">
-            View and manage vehicle inspections
-          </p>
+          <p className="text-muted-foreground">{t("inspections.subtitle")}</p>
         </div>
         <Link
           href="/inspections/new"
           className={cn(buttonVariants(), "bg-blue-600 hover:bg-blue-700")}
         >
-          <Plus className="h-4 w-4 mr-1" />
-          New Inspection
+          <Plus className="h-4 w-4 me-1" />
+          {t("inspections.newInspection")}
         </Link>
       </div>
 
       <div className="relative max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Search by plate or customer..."
-          className="pl-9"
+          placeholder={t("inspections.searchPlaceholder")}
+          className="ps-9"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -79,25 +87,25 @@ export default function InspectionsPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Customer</TableHead>
-              <TableHead>Vehicle</TableHead>
-              <TableHead>Inspector</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>{t("inspections.table.customer")}</TableHead>
+              <TableHead>{t("inspections.table.vehicle")}</TableHead>
+              <TableHead>{t("inspections.table.inspector")}</TableHead>
+              <TableHead>{t("inspections.table.status")}</TableHead>
+              <TableHead>{t("inspections.table.date")}</TableHead>
+              <TableHead className="text-end">{t("inspections.table.actions")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                  Loading...
+                  {t("common.loading")}
                 </TableCell>
               </TableRow>
             ) : inspections.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                  No inspections found
+                  {t("inspections.table.empty")}
                 </TableCell>
               </TableRow>
             ) : (
@@ -128,20 +136,20 @@ export default function InspectionsPage() {
                             : "secondary"
                       }
                     >
-                      {insp.status}
+                      {t(`inspections.status.${insp.status}`)}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    {new Date(insp.created_at).toLocaleDateString()}
+                    {new Date(insp.created_at).toLocaleDateString(tag)}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-end">
                     <div className="flex justify-end gap-2">
                       {(insp.status === "draft" || insp.status === "in_progress") && (
                         <Link
                           href={`/inspections/${insp.id}/edit`}
                           className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
                         >
-                          Continue
+                          {t("inspections.actions.continue")}
                         </Link>
                       )}
                       <Link

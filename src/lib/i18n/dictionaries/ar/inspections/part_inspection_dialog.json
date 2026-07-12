@@ -1,0 +1,10 @@
+ 
+{
+  "condition": "الحالة",
+  "severity": "درجة الخطورة",
+  "notes": "ملاحظات",
+  "notesPlaceholder": "ملاحظات إضافية...",
+  "photo": "صورة",
+  "cancel": "إلغاء",
+  "save": "حفظ"
+}

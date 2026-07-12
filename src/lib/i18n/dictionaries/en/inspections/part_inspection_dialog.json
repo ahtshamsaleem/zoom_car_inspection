@@ -1,0 +1,10 @@
+ 
+{
+  "condition": "Condition",
+  "severity": "Severity",
+  "notes": "Notes",
+  "notesPlaceholder": "Additional notes...",
+  "photo": "Photo",
+  "cancel": "Cancel",
+  "save": "Save"
+}

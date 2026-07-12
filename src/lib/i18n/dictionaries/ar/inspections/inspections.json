@@ -1,0 +1,26 @@
+ 
+{
+  "titleToday": "فحوصات اليوم",
+  "titleAll": "جميع الفحوصات",
+  "subtitle": "عرض وإدارة فحوصات المركبات",
+  "newInspection": "فحص جديد",
+  "searchPlaceholder": "البحث برقم اللوحة أو اسم العميل...",
+  "table": {
+    "customer": "العميل",
+    "vehicle": "المركبة",
+    "inspector": "الفاحص",
+    "status": "الحالة",
+    "date": "التاريخ",
+    "actions": "الإجراءات",
+    "empty": "لم يتم العثور على فحوصات"
+  },
+  "status": {
+    "draft": "مسودة",
+    "in_progress": "قيد التنفيذ",
+    "completed": "مكتمل",
+    "cancelled": "ملغى"
+  },
+  "actions": {
+    "continue": "متابعة"
+  }
+}

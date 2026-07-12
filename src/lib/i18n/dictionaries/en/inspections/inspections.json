@@ -1,0 +1,26 @@
+ 
+{
+  "titleToday": "Today's Inspections",
+  "titleAll": "All Inspections",
+  "subtitle": "View and manage vehicle inspections",
+  "newInspection": "New Inspection",
+  "searchPlaceholder": "Search by plate or customer...",
+  "table": {
+    "customer": "Customer",
+    "vehicle": "Vehicle",
+    "inspector": "Inspector",
+    "status": "Status",
+    "date": "Date",
+    "actions": "Actions",
+    "empty": "No inspections found"
+  },
+  "status": {
+    "draft": "Draft",
+    "in_progress": "In Progress",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "actions": {
+    "continue": "Continue"
+  }
+}

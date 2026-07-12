@@ -1,0 +1,24 @@
+{
+  "title": "Dashboard",
+  "subtitle": "Overview of inspection activity",
+  "newInspection": "New Inspection",
+  "stats": {
+    "totalToday": "Today's Inspections",
+    "pending": "Pending",
+    "completed": "Completed",
+    "avgInspectionTime": "Avg Time (min)",
+    "vehiclesThisMonth": "This Month",
+    "revenue": "Revenue (AED)"
+  },
+  "recent": {
+    "title": "Recent Inspections",
+    "empty": "No inspections yet. Start your first inspection!",
+    "unknownCustomer": "Unknown Customer"
+  },
+  "status": {
+    "pending": "Pending",
+    "in_progress": "In Progress",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  }
+}

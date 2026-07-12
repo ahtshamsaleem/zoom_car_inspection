@@ -15,6 +15,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { PART_CONDITIONS, SEVERITY_OPTIONS } from "@/constants/inspection";
 import { PhotoUpload } from "@/components/inspection/photo-upload";
+import { useTranslation } from "@/hooks/use-translation";
 import type { PartCondition, PartInspection, Severity } from "@/types";
 
 const schema = z.object({
@@ -39,6 +40,7 @@ export function PartInspectionDialog({
   value,
   onSave,
 }: PartInspectionDialogProps) {
+  const { t } = useTranslation();
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -71,26 +73,26 @@ export function PartInspectionDialog({
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-3">
-            <Label>Condition</Label>
+            <Label>{t("part_inspection_dialog.condition")}</Label>
             <RadioGroup
               value={condition}
               onValueChange={(v) => form.setValue("condition", v)}
               className="grid grid-cols-2 gap-2"
             >
               {PART_CONDITIONS.map((c) => (
-                <div key={c.value} className="flex items-center space-x-2">
-                  <RadioGroupItem value={c.value} id={c.value} />
-                  <Label htmlFor={c.value} className="font-normal cursor-pointer">
-                    {c.label}
-                  </Label>
-                </div>
-              ))}
+  <div key={c.value} className="flex items-center space-x-2">
+    <RadioGroupItem value={c.value} id={c.value} />
+    <Label htmlFor={c.value} className="font-normal cursor-pointer">
+      {t(`constants.conditions.${c.value}`)}
+    </Label>
+  </div>
+))}
             </RadioGroup>
           </div>
 
           {showSeverity && (
             <div className="space-y-3">
-              <Label>Severity</Label>
+              <Label>{t("constants.severity")}</Label>
               <RadioGroup
                 value={form.watch("severity")}
                 onValueChange={(v) => form.setValue("severity", v)}
@@ -100,6 +102,7 @@ export function PartInspectionDialog({
                   <div key={s.value} className="flex items-center space-x-2">
                     <RadioGroupItem value={s.value} id={`sev-${s.value}`} />
                     <Label htmlFor={`sev-${s.value}`} className="font-normal cursor-pointer">
+                      {/* TODO: comes from SEVERITY_OPTIONS constant — still English, see note */}
                       {s.label}
                     </Label>
                   </div>
@@ -109,12 +112,15 @@ export function PartInspectionDialog({
           )}
 
           <div className="space-y-2">
-            <Label>Notes</Label>
-            <Textarea {...form.register("notes")} placeholder="Additional notes..." />
+            <Label>{t("part_inspection_dialog.notes")}</Label>
+            <Textarea
+              {...form.register("notes")}
+              placeholder={t("part_inspection_dialog.notesPlaceholder")}
+            />
           </div>
 
           <div className="space-y-2">
-            <Label>Photo</Label>
+            <Label>{t("part_inspection_dialog.photo")}</Label>
             <PhotoUpload
               value={photoUrl ? [photoUrl] : []}
               onChange={(urls) => form.setValue("photoUrl", urls[0] || "")}
@@ -124,9 +130,9 @@ export function PartInspectionDialog({
 
           <div className="flex justify-end gap-2">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t("part_inspection_dialog.cancel")}
             </Button>
-            <Button type="submit">Save</Button>
+            <Button type="submit">{t("part_inspection_dialog.save")}</Button>
           </div>
         </form>
       </DialogContent>

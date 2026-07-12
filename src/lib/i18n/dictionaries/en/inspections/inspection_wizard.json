@@ -1,0 +1,24 @@
+ 
+{
+  "stepOf": "Step {current} of {total}",
+  "saveDraft": "Save Draft",
+  "previous": "Previous",
+  "next": "Next",
+  "completeInspection": "Complete Inspection",
+  "toasts": {
+    "completed": "Inspection completed!",
+    "progressSaved": "Progress saved",
+    "saveFailed": "Failed to save"
+  },
+  "sections": {
+    "chassis": { "title": "Chassis Inspection", "description": "Inspect structural components and accident evidence" },
+    "engine": { "title": "Engine Inspection", "description": "Check engine components, fluids, and performance indicators" },
+    "transmission": { "title": "Transmission Inspection", "description": "Inspect transmission system and related components" },
+    "suspension": { "title": "Suspension Inspection", "description": "Check suspension components at all corners" },
+    "brakes": { "title": "Brakes Inspection", "description": "Inspect brake system components" },
+    "steering": { "title": "Steering Inspection", "description": "Check steering system components" },
+    "interior": { "title": "Interior Inspection", "description": "Inspect interior features and components" },
+    "electronics": { "title": "Electronics Inspection", "description": "Run diagnostics and check electronic systems" },
+    "roadTest": { "title": "Road Test", "description": "Record findings from the road test" }
+  }
+}

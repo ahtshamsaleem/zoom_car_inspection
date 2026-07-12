@@ -1,0 +1,24 @@
+ 
+{
+  "stepOf": "الخطوة {current} من {total}",
+  "saveDraft": "حفظ كمسودة",
+  "previous": "السابق",
+  "next": "التالي",
+  "completeInspection": "إكمال الفحص",
+  "toasts": {
+    "completed": "تم إكمال الفحص!",
+    "progressSaved": "تم حفظ التقدم",
+    "saveFailed": "فشل الحفظ"
+  },
+  "sections": {
+    "chassis": { "title": "فحص الهيكل", "description": "فحص المكونات الهيكلية وآثار الحوادث" },
+    "engine": { "title": "فحص المحرك", "description": "فحص مكونات المحرك والسوائل ومؤشرات الأداء" },
+    "transmission": { "title": "فحص ناقل الحركة", "description": "فحص نظام ناقل الحركة والمكونات المرتبطة به" },
+    "suspension": { "title": "فحص نظام التعليق", "description": "فحص مكونات التعليق في جميع الزوايا" },
+    "brakes": { "title": "فحص الفرامل", "description": "فحص مكونات نظام الفرامل" },
+    "steering": { "title": "فحص نظام التوجيه", "description": "فحص مكونات نظام التوجيه" },
+    "interior": { "title": "فحص المقصورة الداخلية", "description": "فحص ميزات ومكونات المقصورة الداخلية" },
+    "electronics": { "title": "فحص الإلكترونيات", "description": "إجراء التشخيصات وفحص الأنظمة الإلكترونية" },
+    "roadTest": { "title": "اختبار القيادة", "description": "تسجيل نتائج اختبار القيادة" }
+  }
+}

@@ -83,28 +83,7 @@ export const EXTERIOR_PARTS = [
 
 
 
-// export const EXTERIOR_PARTS = [
-//   { id: "hood", label: "Hood" },
-//   { id: "front_bumper", label: "Front Bumper" },
-//   { id: "front_grille", label: "Front Grille" },
-//   { id: "left_fender", label: "Left Fender" },
-//   { id: "right_fender", label: "Right Fender" },
-//   { id: "left_front_door", label: "Left Front Door" },
-//   { id: "right_front_door", label: "Right Front Door" },
-//   { id: "left_rear_door", label: "Left Rear Door" },
-//   { id: "right_rear_door", label: "Right Rear Door" },
-//   { id: "left_quarter", label: "Left Quarter Panel" },
-//   { id: "right_quarter", label: "Right Quarter Panel" },
-//   { id: "roof", label: "Roof" },
-//   { id: "trunk", label: "Trunk" },
-//   { id: "rear_bumper", label: "Rear Bumper" },
-//   { id: "left_mirror", label: "Left Mirror" },
-//   { id: "right_mirror", label: "Right Mirror" },
-//   { id: "windshield", label: "Windshield" },
-//   { id: "rear_glass", label: "Rear Glass" },
-//   { id: "side_windows", label: "Side Windows" },
-// ] as const;
-
+ 
 export const PART_CONDITIONS: { value: PartCondition; label: string }[] = [
   { value: "good", label: "Good" },
   { value: "scratch", label: "Scratch" },
@@ -121,6 +100,11 @@ export const SEVERITY_OPTIONS = [
   { value: "medium", label: "Medium" },
   { value: "major", label: "Major" },
 ] as const;
+
+
+
+ 
+
 
 export const CONDITION_COLORS: Record<PartCondition, string> = {
   good: "#ffffff",

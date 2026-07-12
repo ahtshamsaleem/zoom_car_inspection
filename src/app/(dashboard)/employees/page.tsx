@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -40,10 +40,21 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { toast } from "sonner";
-import type { Profile } from "@/types";
+import { useTranslation } from "@/hooks/use-translation";
+import type { Profile, UserRole } from "@/types";
 
 export default function EmployeesPage() {
+  const { t, locale } = useTranslation();
   const [employees, setEmployees] = useState<Profile[]>([]);
+
+  // Translated per-locale, recomputed only when locale changes
+  const ROLE_OPTIONS: Record<UserRole, string> = useMemo(
+    () => ({
+      inspector: t("employees.roles.inspector"),
+      manager: t("employees.roles.manager"),
+    }),
+    [locale]
+  );
 
   // Create dialog state
   const [open, setOpen] = useState(false);
@@ -72,7 +83,6 @@ export default function EmployeesPage() {
   );
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // in openEdit
   const openEdit = (emp: Profile) => {
     setEditingId(emp.id);
     setEditForm({
@@ -100,13 +110,13 @@ export default function EmployeesPage() {
     setIsDeleting(false);
 
     if (res.ok) {
-      toast.success("Employee deleted");
+      toast.success(t("employees.toasts.deleted"));
       setDeleteOpen(false);
       setDeletingEmployee(null);
       loadEmployees();
     } else {
       const data = await res.json();
-      toast.error(data.error || "Failed to delete employee");
+      toast.error(data.error || t("employees.toasts.deleteFailed"));
     }
   };
 
@@ -128,7 +138,7 @@ export default function EmployeesPage() {
       body: JSON.stringify(form),
     });
     if (res.ok) {
-      toast.success("Employee added");
+      toast.success(t("employees.toasts.added"));
       setOpen(false);
       setForm({
         fullName: "",
@@ -140,7 +150,7 @@ export default function EmployeesPage() {
       loadEmployees();
     } else {
       const data = await res.json();
-      toast.error(data.error || "Failed to add employee");
+      toast.error(data.error || t("employees.toasts.addFailed"));
     }
   };
 
@@ -164,12 +174,12 @@ export default function EmployeesPage() {
     });
 
     if (res.ok) {
-      toast.success("Employee updated");
+      toast.success(t("employees.toasts.updated"));
       setEditOpen(false);
       loadEmployees();
     } else {
       const data = await res.json();
-      toast.error(data.error || "Failed to update employee");
+      toast.error(data.error || t("employees.toasts.updateFailed"));
     }
   };
 
@@ -177,25 +187,23 @@ export default function EmployeesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Employees</h1>
-          <p className="text-muted-foreground">
-            Manage inspectors and managers
-          </p>
+          <h1 className="text-2xl font-bold">{t("employees.title")}</h1>
+          <p className="text-muted-foreground">{t("employees.subtitle")}</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger  >
+          <DialogTrigger>
             <Button className="bg-blue-600 hover:bg-blue-700">
-              <Plus className="h-4 w-4 mr-1" />
-              Add Employee
+              <Plus className="h-4 w-4 me-1" />
+              {t("employees.addEmployee")}
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Add Employee</DialogTitle>
+              <DialogTitle>{t("employees.dialogs.addTitle")}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>Full Name</Label>
+                <Label>{t("employees.form.fullName")}</Label>
                 <Input
                   value={form.fullName}
                   onChange={(e) =>
@@ -204,7 +212,7 @@ export default function EmployeesPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Email</Label>
+                <Label>{t("employees.form.email")}</Label>
                 <Input
                   type="email"
                   value={form.email}
@@ -212,7 +220,7 @@ export default function EmployeesPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Phone</Label>
+                <Label>{t("employees.form.phone")}</Label>
                 <Input
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -220,10 +228,10 @@ export default function EmployeesPage() {
               </div>
 
               <div className="space-y-2">
-                <Label>Password</Label>
+                <Label>{t("employees.form.password")}</Label>
                 <Input
                   type="text"
-                  placeholder="Leave blank to auto-generate"
+                  placeholder={t("employees.form.passwordPlaceholderCreate")}
                   value={form.password}
                   onChange={(e) =>
                     setForm({ ...form, password: e.target.value })
@@ -231,8 +239,9 @@ export default function EmployeesPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Role</Label>
+                <Label>{t("employees.form.role")}</Label>
                 <Select
+                  items={ROLE_OPTIONS}
                   value={form.role}
                   onValueChange={(v) =>
                     setForm({ ...form, role: v as "manager" | "inspector" })
@@ -242,13 +251,17 @@ export default function EmployeesPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="inspector">Inspector</SelectItem>
-                    <SelectItem value="manager">Manager</SelectItem>
+                    <SelectItem value="inspector">
+                      {ROLE_OPTIONS.inspector}
+                    </SelectItem>
+                    <SelectItem value="manager">
+                      {ROLE_OPTIONS.manager}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <Button onClick={handleCreate} className="w-full">
-                Create Employee
+                {t("employees.dialogs.createButton")}
               </Button>
             </div>
           </DialogContent>
@@ -259,12 +272,12 @@ export default function EmployeesPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Phone</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="w-[80px]">Actions</TableHead>
+              <TableHead>{t("employees.table.name")}</TableHead>
+              <TableHead>{t("employees.table.email")}</TableHead>
+              <TableHead>{t("employees.table.phone")}</TableHead>
+              <TableHead>{t("employees.table.role")}</TableHead>
+              <TableHead>{t("employees.table.status")}</TableHead>
+              <TableHead className="w-[80px]">{t("employees.table.actions")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -274,7 +287,7 @@ export default function EmployeesPage() {
                   colSpan={6}
                   className="text-center py-8 text-muted-foreground"
                 >
-                  No employees yet
+                  {t("employees.table.empty")}
                 </TableCell>
               </TableRow>
             ) : (
@@ -284,13 +297,15 @@ export default function EmployeesPage() {
                   <TableCell>{emp.email}</TableCell>
                   <TableCell>{emp.phone || "—"}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="capitalize">
-                      {emp.role}
+                    <Badge variant="outline">
+                      {ROLE_OPTIONS[emp.role as UserRole]}
                     </Badge>
                   </TableCell>
                   <TableCell>
                     <Badge variant={emp.is_active ? "default" : "secondary"}>
-                      {emp.is_active ? "Active" : "Inactive"}
+                      {emp.is_active
+                        ? t("employees.status.active")
+                        : t("employees.status.inactive")}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -322,11 +337,11 @@ export default function EmployeesPage() {
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Employee</DialogTitle>
+            <DialogTitle>{t("employees.dialogs.editTitle")}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label>Full Name</Label>
+              <Label>{t("employees.form.fullName")}</Label>
               <Input
                 value={editForm.fullName}
                 onChange={(e) =>
@@ -335,7 +350,7 @@ export default function EmployeesPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label>Phone</Label>
+              <Label>{t("employees.form.phone")}</Label>
               <Input
                 value={editForm.phone}
                 onChange={(e) =>
@@ -344,8 +359,9 @@ export default function EmployeesPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label>Role</Label>
+              <Label>{t("employees.form.role")}</Label>
               <Select
+                items={ROLE_OPTIONS}
                 value={editForm.role}
                 onValueChange={(v) =>
                   setEditForm({
@@ -358,17 +374,21 @@ export default function EmployeesPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="inspector">Inspector</SelectItem>
-                  <SelectItem value="manager">Manager</SelectItem>
+                  <SelectItem value="inspector">
+                    {ROLE_OPTIONS.inspector}
+                  </SelectItem>
+                  <SelectItem value="manager">
+                    {ROLE_OPTIONS.manager}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="flex items-center justify-between rounded-lg border p-3">
               <div>
-                <Label>Active</Label>
+                <Label>{t("employees.form.active")}</Label>
                 <p className="text-sm text-muted-foreground">
-                  Inactive employees cannot log in
+                  {t("employees.form.activeHint")}
                 </p>
               </div>
               <Button
@@ -379,15 +399,17 @@ export default function EmployeesPage() {
                   setEditForm({ ...editForm, isActive: !editForm.isActive })
                 }
               >
-                {editForm.isActive ? "Active" : "Inactive"}
+                {editForm.isActive
+                  ? t("employees.status.active")
+                  : t("employees.status.inactive")}
               </Button>
             </div>
 
             <div className="space-y-2">
-              <Label>New Password (optional)</Label>
+              <Label>{t("employees.form.newPassword")}</Label>
               <Input
                 type="text"
-                placeholder="Leave blank to keep current password"
+                placeholder={t("employees.form.passwordPlaceholderEdit")}
                 value={editForm.password}
                 onChange={(e) =>
                   setEditForm({ ...editForm, password: e.target.value })
@@ -395,40 +417,38 @@ export default function EmployeesPage() {
               />
             </div>
             <Button onClick={handleUpdate} className="w-full">
-              Save Changes
+              {t("employees.dialogs.saveButton")}
             </Button>
           </div>
         </DialogContent>
       </Dialog>
 
-
-
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-  <AlertDialogContent>
-    <AlertDialogHeader>
-      <AlertDialogTitle>Delete Employee</AlertDialogTitle>
-      <AlertDialogDescription>
-        This will permanently delete{" "}
-        <span className="font-medium text-foreground">
-          {deletingEmployee?.full_name}
-        </span>
-        {" "}and remove their access. This action cannot be undone.
-      </AlertDialogDescription>
-    </AlertDialogHeader>
-    <AlertDialogFooter>
-      <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
-      <AlertDialogAction
-        onClick={handleDelete}
-        disabled={isDeleting}
-        className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
-      >
-        {isDeleting ? "Deleting..." : "Delete"}
-      </AlertDialogAction>
-    </AlertDialogFooter>
-  </AlertDialogContent>
-</AlertDialog>
-
-
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("employees.dialogs.deleteTitle")}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t("employees.dialogs.deleteDescriptionPrefix")}{" "}
+              <span className="font-medium text-foreground">
+                {deletingEmployee?.full_name}
+              </span>{" "}
+              {t("employees.dialogs.deleteDescriptionSuffix")}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>
+              {t("common.cancel")}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+            >
+              {isDeleting ? t("employees.dialogs.deleting") : t("employees.dialogs.delete")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

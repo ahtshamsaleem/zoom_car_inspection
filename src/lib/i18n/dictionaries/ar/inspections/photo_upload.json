@@ -1,0 +1,7 @@
+{
+    "uploadFailed": "فشل تحميل {fileName}",
+    "uploadError": "حدث خطأ أثناء التحميل. يرجى المحاولة مرة أخرى",
+    "uploading": "جاري التحميل...",
+    "clickToUpload": "انقر لتحميل الصور",
+    "uploadedAlt": "تم الرفع"
+  }

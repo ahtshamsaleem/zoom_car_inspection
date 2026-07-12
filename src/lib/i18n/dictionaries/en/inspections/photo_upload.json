@@ -1,0 +1,7 @@
+{
+    "uploadFailed": "Failed to upload {fileName}",
+    "uploadError": "Something went wrong while uploading. Please try again.",
+    "uploading": "Uploading...",
+    "clickToUpload": "Click to upload photos",
+    "uploadedAlt": "Uploaded"
+  }

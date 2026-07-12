@@ -11,9 +11,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useTranslation } from "@/hooks/use-translation";
 import type { Customer } from "@/types";
 
 export default function CustomersPage() {
+  const { t } = useTranslation();
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [search, setSearch] = useState("");
 
@@ -28,17 +30,15 @@ export default function CustomersPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Customer Database</h1>
-        <p className="text-muted-foreground">
-          View all customers and their inspection history
-        </p>
+        <h1 className="text-2xl font-bold">{t("customers.title")}</h1>
+        <p className="text-muted-foreground">{t("customers.subtitle")}</p>
       </div>
 
       <div className="relative max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Search customers..."
-          className="pl-9"
+          placeholder={t("customers.searchPlaceholder")}
+          className="ps-9"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -48,17 +48,17 @@ export default function CustomersPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Mobile</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Emirates ID</TableHead>
+              <TableHead>{t("customers.table.name")}</TableHead>
+              <TableHead>{t("customers.table.mobile")}</TableHead>
+              <TableHead>{t("customers.table.email")}</TableHead>
+              <TableHead>{t("customers.table.emiratesId")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {customers.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">
-                  No customers found
+                  {t("customers.table.empty")}
                 </TableCell>
               </TableRow>
             ) : (

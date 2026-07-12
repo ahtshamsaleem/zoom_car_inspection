@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Loader2, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/use-translation";
 
 interface PhotoUploadProps {
   value?: string[];
@@ -20,6 +21,7 @@ export function PhotoUpload({
   multiple = true,
   className,
 }: PhotoUploadProps) {
+  const { t } = useTranslation();
   const [uploading, setUploading] = useState(false);
 
   const handleUpload = useCallback(
@@ -40,7 +42,9 @@ export function PhotoUpload({
           if (data.url) {
             newUrls.push(data.url);
           } else {
-            toast.error(`Failed to upload ${file.name}`);
+            toast.error(
+              t("photo_upload.uploadFailed").replace("{fileName}", file.name)
+            );
           }
         }
 
@@ -51,13 +55,13 @@ export function PhotoUpload({
         const message =
           axios.isAxiosError(error) && error.response?.data?.message
             ? error.response.data.message
-            : "Something went wrong while uploading. Please try again.";
+            : t("photo_upload.uploadError");
         toast.error(message);
       } finally {
         setUploading(false);
       }
     },
-    [value, onChange, multiple]
+    [value, onChange, multiple, t]
   );
 
   const removePhoto = (url: string) => {
@@ -72,7 +76,7 @@ export function PhotoUpload({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={url}
-              alt="Uploaded"
+              alt={t("photo_upload.uploadedAlt")}
               className="h-24 w-24 rounded-lg object-cover border"
             />
             <button
@@ -100,7 +104,7 @@ export function PhotoUpload({
           <Upload className="h-5 w-5 text-muted-foreground" />
         )}
         <span className="text-sm text-muted-foreground">
-          {uploading ? "Uploading..." : "Click to upload photos"}
+          {uploading ? t("photo_upload.uploading") : t("photo_upload.clickToUpload")}
         </span>
       </label>
     </div>

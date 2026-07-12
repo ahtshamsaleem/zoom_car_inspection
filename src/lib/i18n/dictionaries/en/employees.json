@@ -1,0 +1,53 @@
+{
+  "title": "Employees",
+  "subtitle": "Manage inspectors and managers",
+  "addEmployee": "Add Employee",
+  "table": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "role": "Role",
+    "status": "Status",
+    "actions": "Actions",
+    "empty": "No employees yet"
+  },
+  "roles": {
+    "manager": "Manager",
+    "inspector": "Inspector"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "form": {
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "password": "Password",
+    "passwordPlaceholderCreate": "Leave blank to auto-generate",
+    "passwordPlaceholderEdit": "Leave blank to keep current password",
+    "newPassword": "New Password (optional)",
+    "role": "Role",
+    "active": "Active",
+    "activeHint": "Inactive employees cannot log in"
+  },
+  "dialogs": {
+    "addTitle": "Add Employee",
+    "createButton": "Create Employee",
+    "editTitle": "Edit Employee",
+    "saveButton": "Save Changes",
+    "deleteTitle": "Delete Employee",
+    "deleteDescriptionPrefix": "This will permanently delete",
+    "deleteDescriptionSuffix": "and remove their access. This action cannot be undone.",
+    "deleting": "Deleting...",
+    "delete": "Delete"
+  },
+  "toasts": {
+    "added": "Employee added",
+    "addFailed": "Failed to add employee",
+    "updated": "Employee updated",
+    "updateFailed": "Failed to update employee",
+    "deleted": "Employee deleted",
+    "deleteFailed": "Failed to delete employee"
+  }
+}

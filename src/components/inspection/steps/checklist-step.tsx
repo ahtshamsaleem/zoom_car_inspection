@@ -91,8 +91,8 @@ export function ChecklistStep({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="good"  >Good</SelectItem>
-                    <SelectItem value="issue" label="Issue">Issue</SelectItem>
-                    <SelectItem value="na" label="N/A">N/A</SelectItem>
+                    <SelectItem value="issue"  >Issue</SelectItem>
+                    <SelectItem value="na"  >N/A</SelectItem>
                   </SelectContent>
                 </Select>
                 {itemData.status === "issue" && (

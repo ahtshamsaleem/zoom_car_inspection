@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { INSPECTION_STEPS, CHASSIS_ITEMS, ENGINE_ITEMS, TRANSMISSION_ITEMS, SUSPENSION_ITEMS, BRAKES_ITEMS, STEERING_ITEMS, INTERIOR_ITEMS, ELECTRONICS_ITEMS, ROAD_TEST_ITEMS } from "@/constants/inspection";
 import { useInspectionStore } from "@/stores/inspection-store";
+import { useTranslation } from "@/hooks/use-translation";
 import { CustomerStep } from "@/components/inspection/steps/customer-step";
 import { VehicleStep } from "@/components/inspection/steps/vehicle-step";
 import { ExteriorStep } from "@/components/inspection/steps/exterior-step";
@@ -24,6 +25,7 @@ interface InspectionWizardProps {
 export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
   const router = useRouter();
   const store = useInspectionStore();
+  const { t } = useTranslation();
   const [saving, setSaving] = useState(false);
   const currentStep = store.currentStep;
   const totalSteps = INSPECTION_STEPS.length;
@@ -75,14 +77,16 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
         }
 
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Save failed");
+        if (!res.ok) throw new Error(data.error || t("inspection_wizard.toasts.saveFailed"));
 
         if (!store.inspectionId && data.id) {
           store.setInspectionId(data.id);
         }
 
         toast.success(
-          status === "completed" ? "Inspection completed!" : "Progress saved"
+          status === "completed"
+            ? t("inspection_wizard.toasts.completed")
+            : t("inspection_wizard.toasts.progressSaved")
         );
 
         if (status === "completed") {
@@ -90,12 +94,12 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
           router.push(`/inspections/${data.id}/report`);
         }
       } catch (err) {
-        toast.error(err instanceof Error ? err.message : "Failed to save");
+        toast.error(err instanceof Error ? err.message : t("inspection_wizard.toasts.saveFailed"));
       } finally {
         setSaving(false);
       }
     },
-    [store, inspectionId, router]
+    [store, inspectionId, router, t]
   );
 
   const renderStep = () => {
@@ -111,8 +115,8 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
       case 5:
         return (
           <ChecklistStep
-            title="Chassis Inspection"
-            description="Inspect structural components and accident evidence"
+            title={t("inspection_wizard.sections.chassis.title")}
+            description={t("inspection_wizard.sections.chassis.description")}
             items={CHASSIS_ITEMS}
             section="chassis"
           />
@@ -120,8 +124,8 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
       case 6:
         return (
           <ChecklistStep
-            title="Engine Inspection"
-            description="Check engine components, fluids, and performance indicators"
+            title={t("inspection_wizard.sections.engine.title")}
+            description={t("inspection_wizard.sections.engine.description")}
             items={ENGINE_ITEMS}
             section="engine"
           />
@@ -129,8 +133,8 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
       case 7:
         return (
           <ChecklistStep
-            title="Transmission Inspection"
-            description="Inspect transmission system and related components"
+            title={t("inspection_wizard.sections.transmission.title")}
+            description={t("inspection_wizard.sections.transmission.description")}
             items={TRANSMISSION_ITEMS}
             section="transmission"
           />
@@ -138,8 +142,8 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
       case 8:
         return (
           <ChecklistStep
-            title="Suspension Inspection"
-            description="Check suspension components at all corners"
+            title={t("inspection_wizard.sections.suspension.title")}
+            description={t("inspection_wizard.sections.suspension.description")}
             items={SUSPENSION_ITEMS}
             section="suspension"
           />
@@ -147,8 +151,8 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
       case 9:
         return (
           <ChecklistStep
-            title="Brakes Inspection"
-            description="Inspect brake system components"
+            title={t("inspection_wizard.sections.brakes.title")}
+            description={t("inspection_wizard.sections.brakes.description")}
             items={BRAKES_ITEMS}
             section="brakes"
           />
@@ -156,8 +160,8 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
       case 10:
         return (
           <ChecklistStep
-            title="Steering Inspection"
-            description="Check steering system components"
+            title={t("inspection_wizard.sections.steering.title")}
+            description={t("inspection_wizard.sections.steering.description")}
             items={STEERING_ITEMS}
             section="steering"
           />
@@ -167,8 +171,8 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
       case 12:
         return (
           <ChecklistStep
-            title="Interior Inspection"
-            description="Inspect interior features and components"
+            title={t("inspection_wizard.sections.interior.title")}
+            description={t("inspection_wizard.sections.interior.description")}
             items={INTERIOR_ITEMS}
             section="interior"
           />
@@ -176,8 +180,8 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
       case 13:
         return (
           <ChecklistStep
-            title="Electronics Inspection"
-            description="Run diagnostics and check electronic systems"
+            title={t("inspection_wizard.sections.electronics.title")}
+            description={t("inspection_wizard.sections.electronics.description")}
             items={ELECTRONICS_ITEMS}
             section="electronics"
           />
@@ -185,8 +189,8 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
       case 14:
         return (
           <ChecklistStep
-            title="Road Test"
-            description="Record findings from the road test"
+            title={t("inspection_wizard.sections.roadTest.title")}
+            description={t("inspection_wizard.sections.roadTest.description")}
             items={ROAD_TEST_ITEMS}
             section="roadTest"
           />
@@ -204,9 +208,12 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
         <div className="flex items-center justify-between mb-3">
           <div>
             <p className="text-sm text-muted-foreground">
-              Step {currentStep} of {totalSteps}
+              {t("inspection_wizard.stepOf")
+                .replace("{current}", String(currentStep))
+                .replace("{total}", String(totalSteps))}
             </p>
             <h1 className="text-lg font-semibold">
+              {/* TODO: comes from INSPECTION_STEPS constant — still English, see note above */}
               {INSPECTION_STEPS[currentStep - 1]?.label}
             </h1>
           </div>
@@ -216,8 +223,8 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
             onClick={() => saveInspection("draft")}
             disabled={saving}
           >
-            <Save className="h-4 w-4 mr-1" />
-            Save Draft
+            <Save className="h-4 w-4 me-1" />
+            {t("inspection_wizard.saveDraft")}
           </Button>
         </div>
         <Progress value={progress} className="h-2" />
@@ -234,6 +241,7 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
                     : "bg-muted text-muted-foreground"
               }`}
             >
+              {/* TODO: same INSPECTION_STEPS dependency as above */}
               {step.label}
             </button>
           ))}
@@ -258,8 +266,8 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
           onClick={() => store.setCurrentStep(Math.max(1, currentStep - 1))}
           disabled={currentStep === 1}
         >
-          <ChevronLeft className="h-4 w-4 mr-1" />
-          Previous
+          <ChevronLeft className="h-4 w-4 me-1 rtl:rotate-180" />
+          {t("inspection_wizard.previous")}
         </Button>
 
         {currentStep < totalSteps ? (
@@ -269,8 +277,8 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
               store.setCurrentStep(currentStep + 1);
             }}
           >
-            Next
-            <ChevronRight className="h-4 w-4 ml-1" />
+            {t("inspection_wizard.next")}
+            <ChevronRight className="h-4 w-4 ms-1 rtl:rotate-180" />
           </Button>
         ) : (
           <Button
@@ -278,8 +286,8 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
             disabled={saving}
             className="bg-green-600 hover:bg-green-700"
           >
-            <CheckCircle className="h-4 w-4 mr-1" />
-            Complete Inspection
+            <CheckCircle className="h-4 w-4 me-1" />
+            {t("inspection_wizard.completeInspection")}
           </Button>
         )}
       </div>

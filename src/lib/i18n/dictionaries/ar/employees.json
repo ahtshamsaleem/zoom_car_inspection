@@ -1,0 +1,53 @@
+{
+  "title": "الموظفون",
+  "subtitle": "إدارة الفاحصين والمديرين",
+  "addEmployee": "إضافة موظف",
+  "table": {
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "role": "الدور",
+    "status": "الحالة",
+    "actions": "الإجراءات",
+    "empty": "لا يوجد موظفون بعد"
+  },
+  "roles": {
+    "manager": "مدير",
+    "inspector": "فاحص"
+  },
+  "status": {
+    "active": "نشط",
+    "inactive": "غير نشط"
+  },
+  "form": {
+    "fullName": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "password": "كلمة المرور",
+    "passwordPlaceholderCreate": "اتركه فارغًا للإنشاء التلقائي",
+    "passwordPlaceholderEdit": "اتركه فارغًا للاحتفاظ بكلمة المرور الحالية",
+    "newPassword": "كلمة مرور جديدة (اختياري)",
+    "role": "الدور",
+    "active": "نشط",
+    "activeHint": "لا يمكن للموظفين غير النشطين تسجيل الدخول"
+  },
+  "dialogs": {
+    "addTitle": "إضافة موظف",
+    "createButton": "إنشاء موظف",
+    "editTitle": "تعديل الموظف",
+    "saveButton": "حفظ التغييرات",
+    "deleteTitle": "حذف الموظف",
+    "deleteDescriptionPrefix": "سيؤدي هذا إلى حذف",
+    "deleteDescriptionSuffix": "نهائيًا وإزالة وصوله. لا يمكن التراجع عن هذا الإجراء.",
+    "deleting": "جارٍ الحذف...",
+    "delete": "حذف"
+  },
+  "toasts": {
+    "added": "تمت إضافة الموظف",
+    "addFailed": "فشل إضافة الموظف",
+    "updated": "تم تحديث الموظف",
+    "updateFailed": "فشل تحديث الموظف",
+    "deleted": "تم حذف الموظف",
+    "deleteFailed": "فشل حذف الموظف"
+  }
+}

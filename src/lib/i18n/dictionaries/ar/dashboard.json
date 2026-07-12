@@ -1,0 +1,24 @@
+{
+  "title": "لوحة التحكم",
+  "subtitle": "نظرة عامة على نشاط الفحص",
+  "newInspection": "فحص جديد",
+  "stats": {
+    "totalToday": "فحوصات اليوم",
+    "pending": "قيد الانتظار",
+    "completed": "مكتمل",
+    "avgInspectionTime": "متوسط الوقت (دقيقة)",
+    "vehiclesThisMonth": "هذا الشهر",
+    "revenue": "الإيرادات (درهم)"
+  },
+  "recent": {
+    "title": "أحدث الفحوصات",
+    "empty": "لا توجد فحوصات بعد. ابدأ فحصك الأول!",
+    "unknownCustomer": "عميل غير معروف"
+  },
+  "status": {
+    "pending": "قيد الانتظار",
+    "in_progress": "قيد التنفيذ",
+    "completed": "مكتمل",
+    "cancelled": "ملغى"
+  }
+}
