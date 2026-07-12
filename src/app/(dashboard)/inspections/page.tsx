@@ -41,17 +41,24 @@ export default function InspectionsPage() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const params = new URLSearchParams();
-    if (today) params.set("today", "true");
-    if (search) params.set("search", search);
+useEffect(() => {
+  const params = new URLSearchParams();
 
-    fetch(`/api/inspections?${params}`)
-      .then((r) => r.json())
-      .then(setInspections)
-      .catch(() => setInspections([]))
-      .finally(() => setLoading(false));
-  }, [today, search]);
+  if (today) params.set("today", "true");
+  if (search) params.set("search", search);
+
+  // Send the user's IANA timezone (e.g. "Asia/Karachi", "Asia/Dubai")
+  params.set(
+    "timezone",
+    Intl.DateTimeFormat().resolvedOptions().timeZone
+  );
+
+  fetch(`/api/inspections?${params.toString()}`)
+    .then((r) => r.json())
+    .then(setInspections)
+    .catch(() => setInspections([]))
+    .finally(() => setLoading(false));
+}, [today, search]);
 
   const tag = localeTag[locale] ?? "en-US";
 

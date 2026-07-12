@@ -6,6 +6,7 @@ import {
   calculateInspectionMinutes,
 } from "@/lib/inspection-helpers";
 import { NextResponse } from "next/server";
+import dayjs from "@/lib/dayjs"
 
 export async function GET(request: Request) {
   const supabase = await createClient();
@@ -37,11 +38,23 @@ export async function GET(request: Request) {
     );
   }
   if (today === "true") {
-    const startOfDay = new Date();
-    startOfDay.setHours(0, 0, 0, 0);
-    query = query.gte("created_at", startOfDay.toISOString());
+    // const startOfDay = new Date();
+    // startOfDay.setHours(0, 0, 0, 0);
+    // query = query.gte("created_at", startOfDay.toISOString());
+
+    const timezone = searchParams.get("timezone") || "UTC";
+
+const start = dayjs().tz(timezone).startOf("day");
+const end = start.add(1, "day");
+
+query = query
+  .gte("created_at", start.utc().toISOString())
+  .lt("created_at", end.utc().toISOString());
   }
 
+  console.log("THE FETCH QUERY IS THIS", query )
+
+  
   const { data, error } = await query;
 
   if (error) {
