@@ -7,10 +7,15 @@ CREATE TYPE inspection_status AS ENUM ('draft', 'in_progress', 'completed', 'can
 CREATE TABLE companies (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
-  logo_url TEXT,
   address TEXT,
   phone TEXT,
   email TEXT,
+  logo_url TEXT,
+  letterhead_url TEXT,
+  stamp_url  TEXT,
+  website TEXT,
+  license_number  TEXT,
+  accent_color TEXT DEFAULT '#2563eb',
   settings JSONB DEFAULT '{}',
   created_at TIMESTAMPTZ DEFAULT NOW()
 );

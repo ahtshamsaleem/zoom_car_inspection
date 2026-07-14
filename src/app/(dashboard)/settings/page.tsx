@@ -8,14 +8,23 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { PhotoUpload } from "@/components/inspection/photo-upload";
 
 interface CompanySettings {
   name: string;
   phone: string;
   email: string;
   address: string;
+  logo_url: string;
+  letterhead_url: string;
+  stamp_url: string;
+  website: string;
+  license_number: string;
+  accent_color: string;
   settings?: { reportFooter?: string };
 }
+
+const DEFAULT_ACCENT = "#2563eb";
 
 export default function SettingsPage() {
   const [form, setForm] = useState<CompanySettings>({
@@ -23,6 +32,12 @@ export default function SettingsPage() {
     phone: "",
     email: "",
     address: "",
+    logo_url: "",
+    letterhead_url: "",
+    stamp_url: "",
+    website: "",
+    license_number: "",
+    accent_color: DEFAULT_ACCENT,
     settings: { reportFooter: "" },
   });
   const [loading, setLoading] = useState(true);
@@ -38,6 +53,12 @@ export default function SettingsPage() {
             phone: data.phone || "",
             email: data.email || "",
             address: data.address || "",
+            logo_url: data.logo_url || "",
+            letterhead_url: data.letterhead_url || "",
+            stamp_url: data.stamp_url || "",
+            website: data.website || "",
+            license_number: data.license_number || "",
+            accent_color: data.accent_color || DEFAULT_ACCENT,
             settings: { reportFooter: data.settings?.reportFooter || "" },
           });
         }
@@ -55,6 +76,12 @@ export default function SettingsPage() {
         phone: form.phone,
         email: form.email,
         address: form.address,
+        logo_url: form.logo_url,
+        letterhead_url: form.letterhead_url,
+        stamp_url: form.stamp_url,
+        website: form.website,
+        license_number: form.license_number,
+        accent_color: form.accent_color,
         settings: form.settings,
       }),
     });
@@ -87,6 +114,80 @@ export default function SettingsPage() {
 
       <Card>
         <CardHeader>
+          <CardTitle>Branding</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-6 sm:grid-cols-2">
+          <div className="space-y-2">
+            <Label>Company Logo</Label>
+            <p className="text-xs text-muted-foreground">
+              Shown in the app and small report header
+            </p>
+            <PhotoUpload
+              value={form.logo_url ? [form.logo_url] : []}
+              onChange={(urls) =>
+                setForm({ ...form, logo_url: urls[0] || "" })
+              }
+              multiple={false}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Letterhead Image</Label>
+            <p className="text-xs text-muted-foreground">
+              Full-width banner at the top of PDF reports
+            </p>
+            <PhotoUpload
+              value={form.letterhead_url ? [form.letterhead_url] : []}
+              onChange={(urls) =>
+                setForm({ ...form, letterhead_url: urls[0] || "" })
+              }
+              multiple={false}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Authorized Signature / Stamp</Label>
+            <p className="text-xs text-muted-foreground">
+              Appears near the sign-off section of reports
+            </p>
+            <PhotoUpload
+              value={form.stamp_url ? [form.stamp_url] : []}
+              onChange={(urls) =>
+                setForm({ ...form, stamp_url: urls[0] || "" })
+              }
+              multiple={false}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Report Accent Color</Label>
+            <p className="text-xs text-muted-foreground">
+              Used for headings and dividers in the PDF
+            </p>
+            <div className="flex items-center gap-3">
+              <input
+                type="color"
+                value={form.accent_color}
+                onChange={(e) =>
+                  setForm({ ...form, accent_color: e.target.value })
+                }
+                className="h-10 w-14 cursor-pointer rounded border"
+              />
+              <Input
+                value={form.accent_color}
+                onChange={(e) =>
+                  setForm({ ...form, accent_color: e.target.value })
+                }
+                placeholder="#2563eb"
+                className="max-w-[140px]"
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle>Company Information</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 sm:grid-cols-2">
@@ -114,10 +215,27 @@ export default function SettingsPage() {
             />
           </div>
           <div className="space-y-2">
+            <Label>Website</Label>
+            <Input
+              value={form.website}
+              onChange={(e) => setForm({ ...form, website: e.target.value })}
+              placeholder="https://yourcompany.com"
+            />
+          </div>
+          <div className="space-y-2">
             <Label>Address</Label>
             <Input
               value={form.address}
               onChange={(e) => setForm({ ...form, address: e.target.value })}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Trade License Number</Label>
+            <Input
+              value={form.license_number}
+              onChange={(e) =>
+                setForm({ ...form, license_number: e.target.value })
+              }
             />
           </div>
           <div className="space-y-2 sm:col-span-2">

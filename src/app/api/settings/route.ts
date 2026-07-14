@@ -12,10 +12,13 @@ export async function GET() {
     .from("companies")
     .select("*")
     .eq("id", auth!.profile.company_id!)
-    .single();
+    .maybeSingle();
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+  if (!data) {
+    return NextResponse.json({ error: "Company not found" }, { status: 404 });
   }
 
   return NextResponse.json(data);
@@ -28,7 +31,19 @@ export async function PATCH(request: Request) {
   if (denied) return denied;
 
   const body = await request.json();
-  const { name, phone, email, address, logo_url, settings } = body;
+  const {
+    name,
+    phone,
+    email,
+    address,
+    logo_url,
+    letterhead_url,
+    stamp_url,
+    website,
+    license_number,
+    accent_color,
+    settings,
+  } = body;
 
   const { data, error } = await supabase
     .from("companies")
@@ -38,14 +53,25 @@ export async function PATCH(request: Request) {
       ...(email !== undefined && { email }),
       ...(address !== undefined && { address }),
       ...(logo_url !== undefined && { logo_url }),
+      ...(letterhead_url !== undefined && { letterhead_url }),
+      ...(stamp_url !== undefined && { stamp_url }),
+      ...(website !== undefined && { website }),
+      ...(license_number !== undefined && { license_number }),
+      ...(accent_color !== undefined && { accent_color }),
       ...(settings !== undefined && { settings }),
     })
     .eq("id", auth!.profile.company_id!)
     .select()
-    .single();
+    .maybeSingle();
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+  if (!data) {
+    return NextResponse.json(
+      { error: "Company not found or update not permitted" },
+      { status: 404 }
+    );
   }
 
   return NextResponse.json(data);
