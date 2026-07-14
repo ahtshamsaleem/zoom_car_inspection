@@ -51,6 +51,7 @@ export default function SettingsPage() {
     fetch("/api/settings")
       .then((r) => r.json())
       .then((data) => {
+        console.log("DATA", data)
         if (data.name) {
           setForm({
             name: data.name || "",
