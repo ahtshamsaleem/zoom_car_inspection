@@ -50,6 +50,8 @@ export default function InspectionReportPage() {
     doc.text(`Inspector: ${inspection?.profiles?.full_name || "N/A"}`, 20, 63);
     doc.text(`Date: ${inspection?.created_at ? new Date(inspection.created_at).toLocaleDateString() : "N/A"}`, 20, 70);
     doc.save(`inspection-${id}.pdf`);
+
+     
   };
 
   if (!inspection) {

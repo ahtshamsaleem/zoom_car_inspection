@@ -92,7 +92,7 @@ export function PartInspectionDialog({
 
           {showSeverity && (
             <div className="space-y-3">
-              <Label>{t("constants.severity")}</Label>
+              <Label>{t("part_inspection_dialog.severity")}</Label>
               <RadioGroup
                 value={form.watch("severity")}
                 onValueChange={(v) => form.setValue("severity", v)}
