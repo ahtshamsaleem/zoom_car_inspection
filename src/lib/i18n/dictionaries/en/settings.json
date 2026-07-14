@@ -7,9 +7,13 @@
       "label": "Company Logo",
       "hint": "Shown in the app and small report header"
     },
-    "letterhead": {
-      "label": "Letterhead Image",
+    "letterheadHeader": {
+      "label": "Letterhead Header Image",
       "hint": "Full-width banner at the top of PDF reports"
+    },
+    "letterheadFooter": {
+      "label": "Letterhead Footer Image",
+      "hint": "Full-width banner at the bottom of PDF reports"
     },
     "stamp": {
       "label": "Authorized Signature / Stamp",

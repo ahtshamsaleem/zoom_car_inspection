@@ -17,7 +17,8 @@ interface CompanySettings {
   email: string;
   address: string;
   logo_url: string;
-  letterhead_url: string;
+  letterhead_header_url: string;
+  letterhead_footer_url: string;
   stamp_url: string;
   website: string;
   license_number: string;
@@ -35,7 +36,8 @@ export default function SettingsPage() {
     email: "",
     address: "",
     logo_url: "",
-    letterhead_url: "",
+    letterhead_header_url: "",
+    letterhead_footer_url: "",
     stamp_url: "",
     website: "",
     license_number: "",
@@ -56,7 +58,8 @@ export default function SettingsPage() {
             email: data.email || "",
             address: data.address || "",
             logo_url: data.logo_url || "",
-            letterhead_url: data.letterhead_url || "",
+            letterhead_header_url: data.letterhead_header_url || "",
+            letterhead_footer_url: data.letterhead_footer_url || "",
             stamp_url: data.stamp_url || "",
             website: data.website || "",
             license_number: data.license_number || "",
@@ -79,7 +82,8 @@ export default function SettingsPage() {
         email: form.email,
         address: form.address,
         logo_url: form.logo_url,
-        letterhead_url: form.letterhead_url,
+        letterhead_header_url: form.letterhead_header_url,
+        letterhead_footer_url: form.letterhead_footer_url,
         stamp_url: form.stamp_url,
         website: form.website,
         license_number: form.license_number,
@@ -132,14 +136,28 @@ export default function SettingsPage() {
           </div>
 
           <div className="space-y-2">
-            <Label>{t("settings.branding.letterhead.label")}</Label>
+            <Label>{t("settings.branding.letterheadHeader.label")}</Label>
             <p className="text-xs text-muted-foreground">
-              {t("settings.branding.letterhead.hint")}
+              {t("settings.branding.letterheadHeader.hint")}
             </p>
             <PhotoUpload
-              value={form.letterhead_url ? [form.letterhead_url] : []}
+              value={form.letterhead_header_url ? [form.letterhead_header_url] : []}
               onChange={(urls) =>
-                setForm({ ...form, letterhead_url: urls[0] || "" })
+                setForm({ ...form, letterhead_header_url: urls[0] || "" })
+              }
+              multiple={false}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>{t("settings.branding.letterheadFooter.label")}</Label>
+            <p className="text-xs text-muted-foreground">
+              {t("settings.branding.letterheadFooter.hint")}
+            </p>
+            <PhotoUpload
+              value={form.letterhead_footer_url ? [form.letterhead_footer_url] : []}
+              onChange={(urls) =>
+                setForm({ ...form, letterhead_footer_url: urls[0] || "" })
               }
               multiple={false}
             />
