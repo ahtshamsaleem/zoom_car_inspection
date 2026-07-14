@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { PhotoUpload } from "@/components/inspection/photo-upload";
+import { useTranslation } from "@/hooks/use-translation";
 
 interface CompanySettings {
   name: string;
@@ -27,6 +28,7 @@ interface CompanySettings {
 const DEFAULT_ACCENT = "#2563eb";
 
 export default function SettingsPage() {
+  const { t } = useTranslation();
   const [form, setForm] = useState<CompanySettings>({
     name: "",
     phone: "",
@@ -87,10 +89,10 @@ export default function SettingsPage() {
     });
 
     if (res.ok) {
-      toast.success("Settings saved");
+      toast.success(t("settings.toast.success"));
     } else {
       const data = await res.json();
-      toast.error(data.error || "Failed to save");
+      toast.error(data.error || t("settings.toast.error"));
     }
     setSaving(false);
   };
@@ -106,21 +108,19 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Company Settings</h1>
-        <p className="text-muted-foreground">
-          Configure your inspection company details
-        </p>
+        <h1 className="text-2xl font-bold">{t("settings.title")}</h1>
+        <p className="text-muted-foreground">{t("settings.subtitle")}</p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Branding</CardTitle>
+          <CardTitle>{t("settings.branding.title")}</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-6 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label>Company Logo</Label>
+            <Label>{t("settings.branding.logo.label")}</Label>
             <p className="text-xs text-muted-foreground">
-              Shown in the app and small report header
+              {t("settings.branding.logo.hint")}
             </p>
             <PhotoUpload
               value={form.logo_url ? [form.logo_url] : []}
@@ -132,9 +132,9 @@ export default function SettingsPage() {
           </div>
 
           <div className="space-y-2">
-            <Label>Letterhead Image</Label>
+            <Label>{t("settings.branding.letterhead.label")}</Label>
             <p className="text-xs text-muted-foreground">
-              Full-width banner at the top of PDF reports
+              {t("settings.branding.letterhead.hint")}
             </p>
             <PhotoUpload
               value={form.letterhead_url ? [form.letterhead_url] : []}
@@ -146,9 +146,9 @@ export default function SettingsPage() {
           </div>
 
           <div className="space-y-2">
-            <Label>Authorized Signature / Stamp</Label>
+            <Label>{t("settings.branding.stamp.label")}</Label>
             <p className="text-xs text-muted-foreground">
-              Appears near the sign-off section of reports
+              {t("settings.branding.stamp.hint")}
             </p>
             <PhotoUpload
               value={form.stamp_url ? [form.stamp_url] : []}
@@ -160,9 +160,9 @@ export default function SettingsPage() {
           </div>
 
           <div className="space-y-2">
-            <Label>Report Accent Color</Label>
+            <Label>{t("settings.branding.accentColor.label")}</Label>
             <p className="text-xs text-muted-foreground">
-              Used for headings and dividers in the PDF
+              {t("settings.branding.accentColor.hint")}
             </p>
             <div className="flex items-center gap-3">
               <input
@@ -178,7 +178,7 @@ export default function SettingsPage() {
                 onChange={(e) =>
                   setForm({ ...form, accent_color: e.target.value })
                 }
-                placeholder="#2563eb"
+                placeholder={DEFAULT_ACCENT}
                 className="max-w-[140px]"
               />
             </div>
@@ -188,26 +188,26 @@ export default function SettingsPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Company Information</CardTitle>
+          <CardTitle>{t("settings.info.title")}</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label>Company Name</Label>
+            <Label>{t("settings.info.name")}</Label>
             <Input
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
             />
           </div>
           <div className="space-y-2">
-            <Label>Phone</Label>
+            <Label>{t("settings.info.phone")}</Label>
             <Input
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
-              placeholder="+971 4 XXX XXXX"
+              placeholder={t("settings.info.phonePlaceholder")}
             />
           </div>
           <div className="space-y-2">
-            <Label>Email</Label>
+            <Label>{t("settings.info.email")}</Label>
             <Input
               type="email"
               value={form.email}
@@ -215,22 +215,22 @@ export default function SettingsPage() {
             />
           </div>
           <div className="space-y-2">
-            <Label>Website</Label>
+            <Label>{t("settings.info.website")}</Label>
             <Input
               value={form.website}
               onChange={(e) => setForm({ ...form, website: e.target.value })}
-              placeholder="https://yourcompany.com"
+              placeholder={t("settings.info.websitePlaceholder")}
             />
           </div>
           <div className="space-y-2">
-            <Label>Address</Label>
+            <Label>{t("settings.info.address")}</Label>
             <Input
               value={form.address}
               onChange={(e) => setForm({ ...form, address: e.target.value })}
             />
           </div>
           <div className="space-y-2">
-            <Label>Trade License Number</Label>
+            <Label>{t("settings.info.licenseNumber")}</Label>
             <Input
               value={form.license_number}
               onChange={(e) =>
@@ -239,7 +239,7 @@ export default function SettingsPage() {
             />
           </div>
           <div className="space-y-2 sm:col-span-2">
-            <Label>Report Footer Notes</Label>
+            <Label>{t("settings.info.footerNotes")}</Label>
             <Textarea
               value={form.settings?.reportFooter || ""}
               onChange={(e) =>
@@ -248,7 +248,7 @@ export default function SettingsPage() {
                   settings: { ...form.settings, reportFooter: e.target.value },
                 })
               }
-              placeholder="Terms and conditions for inspection reports..."
+              placeholder={t("settings.info.footerNotesPlaceholder")}
             />
           </div>
           <div className="sm:col-span-2">
@@ -258,7 +258,7 @@ export default function SettingsPage() {
               disabled={saving}
             >
               {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Save Settings
+              {t("settings.save")}
             </Button>
           </div>
         </CardContent>

@@ -1,0 +1,41 @@
+{
+  "title": "Company Settings",
+  "subtitle": "Configure your inspection company details",
+  "branding": {
+    "title": "Branding",
+    "logo": {
+      "label": "Company Logo",
+      "hint": "Shown in the app and small report header"
+    },
+    "letterhead": {
+      "label": "Letterhead Image",
+      "hint": "Full-width banner at the top of PDF reports"
+    },
+    "stamp": {
+      "label": "Authorized Signature / Stamp",
+      "hint": "Appears near the sign-off section of reports"
+    },
+    "accentColor": {
+      "label": "Report Accent Color",
+      "hint": "Used for headings and dividers in the PDF"
+    }
+  },
+  "info": {
+    "title": "Company Information",
+    "name": "Company Name",
+    "phone": "Phone",
+    "phonePlaceholder": "+971 4 XXX XXXX",
+    "email": "Email",
+    "website": "Website",
+    "websitePlaceholder": "https://yourcompany.com",
+    "address": "Address",
+    "licenseNumber": "Trade License Number",
+    "footerNotes": "Report Footer Notes",
+    "footerNotesPlaceholder": "Terms and conditions for inspection reports..."
+  },
+  "save": "Save Settings",
+  "toast": {
+    "success": "Settings saved",
+    "error": "Failed to save"
+  }
+}
