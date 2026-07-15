@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -21,8 +22,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
+import { SECTION_DEFINITIONS } from "@/lib/inspection-template-sections";
 
 export type TemplateItem = {
   id: string;
@@ -48,15 +50,34 @@ const ITEM_TYPES = [
   "measurement_number",
 ];
 
+// { [sectionKey]: { enabled, items: { [itemId]: { included, type } } } }
+type SectionState = Record<
+  string,
+  { enabled: boolean; items: Record<string, { included: boolean; type: string }> }
+>;
+
+function buildInitialState(template?: TemplateItem | null): SectionState {
+  const state: SectionState = {};
+  for (const def of SECTION_DEFINITIONS) {
+    const existing = template?.template_data?.sections?.find((s) => s.key === def.key);
+    const items: Record<string, { included: boolean; type: string }> = {};
+    for (const opt of def.options) {
+      const existingItem = existing?.items.find((i) => i.id === opt.id);
+      items[opt.id] = {
+        included: !!existingItem,
+        type: existingItem?.type ?? "condition_rating",
+      };
+    }
+    state[def.key] = { enabled: !!existing, items };
+  }
+  return state;
+}
+
 interface TemplateFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   template?: TemplateItem | null;
   onSaved: (item: TemplateItem) => void;
-}
-
-function emptySection(): TemplateSection {
-  return { key: "", label: "", items: [] };
 }
 
 export function TemplateFormDialog({
@@ -70,7 +91,9 @@ export function TemplateFormDialog({
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [isDefault, setIsDefault] = useState(false);
-  const [sections, setSections] = useState<TemplateSection[]>([]);
+  const [sectionState, setSectionState] = useState<SectionState>({});
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const [filters, setFilters] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -78,67 +101,57 @@ export function TemplateFormDialog({
       setName(template?.name ?? "");
       setDescription(template?.description ?? "");
       setIsDefault(template?.is_default ?? false);
-      setSections(template?.template_data?.sections ?? [emptySection()]);
+      setSectionState(buildInitialState(template));
+      setExpanded({});
+      setFilters({});
     }
   }, [open, template]);
 
-  function addSection() {
-    setSections((prev) => [...prev, emptySection()]);
+  function toggleSectionEnabled(key: string, enabled: boolean) {
+    setSectionState((prev) => ({ ...prev, [key]: { ...prev[key], enabled } }));
+    if (enabled) setExpanded((prev) => ({ ...prev, [key]: true }));
   }
 
-  function removeSection(index: number) {
-    setSections((prev) => prev.filter((_, i) => i !== index));
+  function toggleItem(sectionKey: string, itemId: string, included: boolean) {
+    setSectionState((prev) => ({
+      ...prev,
+      [sectionKey]: {
+        ...prev[sectionKey],
+        items: {
+          ...prev[sectionKey].items,
+          [itemId]: { ...prev[sectionKey].items[itemId], included },
+        },
+      },
+    }));
   }
 
-  function updateSection(index: number, patch: Partial<TemplateSection>) {
-    setSections((prev) =>
-      prev.map((s, i) => (i === index ? { ...s, ...patch } : s))
-    );
+  function setItemType(sectionKey: string, itemId: string, type: string) {
+    setSectionState((prev) => ({
+      ...prev,
+      [sectionKey]: {
+        ...prev[sectionKey],
+        items: {
+          ...prev[sectionKey].items,
+          [itemId]: { ...prev[sectionKey].items[itemId], type },
+        },
+      },
+    }));
   }
 
-  function addItem(sectionIndex: number) {
-    setSections((prev) =>
-      prev.map((s, i) =>
-        i === sectionIndex
-          ? {
-              ...s,
-              items: [
-                ...s.items,
-                { id: "", label: "", type: "condition_rating" },
-              ],
-            }
-          : s
-      )
-    );
+  function selectAll(sectionKey: string, ids: string[]) {
+    setSectionState((prev) => {
+      const items = { ...prev[sectionKey].items };
+      ids.forEach((id) => (items[id] = { ...items[id], included: true }));
+      return { ...prev, [sectionKey]: { ...prev[sectionKey], items } };
+    });
   }
 
-  function updateItem(
-    sectionIndex: number,
-    itemIndex: number,
-    patch: Partial<TemplateSection["items"][number]>
-  ) {
-    setSections((prev) =>
-      prev.map((s, i) =>
-        i === sectionIndex
-          ? {
-              ...s,
-              items: s.items.map((it, j) =>
-                j === itemIndex ? { ...it, ...patch } : it
-              ),
-            }
-          : s
-      )
-    );
-  }
-
-  function removeItem(sectionIndex: number, itemIndex: number) {
-    setSections((prev) =>
-      prev.map((s, i) =>
-        i === sectionIndex
-          ? { ...s, items: s.items.filter((_, j) => j !== itemIndex) }
-          : s
-      )
-    );
+  function clearAll(sectionKey: string, ids: string[]) {
+    setSectionState((prev) => {
+      const items = { ...prev[sectionKey].items };
+      ids.forEach((id) => (items[id] = { ...items[id], included: false }));
+      return { ...prev, [sectionKey]: { ...prev[sectionKey], items } };
+    });
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -146,6 +159,28 @@ export function TemplateFormDialog({
 
     if (!name.trim()) {
       toast.error("Template name is required");
+      return;
+    }
+
+    const sections: TemplateSection[] = SECTION_DEFINITIONS.filter(
+      (def) => sectionState[def.key]?.enabled
+    )
+      .map((def) => ({
+        key: def.key,
+        label: def.label,
+        items: def.options
+          .filter((opt) => sectionState[def.key].items[opt.id]?.included)
+          .map((opt) => ({
+            id: opt.id,
+            label: opt.label,
+            // type: sectionState[def.key].items[opt.id].type,
+            type: "",
+          })),
+      }))
+      .filter((s) => s.items.length > 0);
+
+    if (sections.length === 0) {
+      toast.error("Select at least one section with at least one item");
       return;
     }
 
@@ -180,12 +215,12 @@ export function TemplateFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-xl">
         <form onSubmit={handleSubmit} className="space-y-4 max-h-[75vh] overflow-y-auto pr-1">
           <DialogHeader>
             <DialogTitle>{isEdit ? "Edit Template" : "New Template"}</DialogTitle>
             <DialogDescription>
-              Define the checklist sections and items inspectors will fill out.
+              Choose which sections and inspection points to include.
             </DialogDescription>
           </DialogHeader>
 
@@ -221,98 +256,120 @@ export function TemplateFormDialog({
             <Switch id="is_default" checked={isDefault} onCheckedChange={setIsDefault} />
           </div>
 
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <Label>Sections</Label>
-              <Button type="button" variant="outline" size="sm" onClick={addSection}>
-                <Plus className="h-3.5 w-3.5 mr-1" />
-                Add Section
-              </Button>
-            </div>
+          <div className="space-y-2">
+            <Label>Sections</Label>
+            {SECTION_DEFINITIONS.map((def) => {
+              const state = sectionState[def.key];
+              if (!state) return null;
 
-            {sections.map((section, sIdx) => (
-              <div key={sIdx} className="rounded-lg border p-3 space-y-3">
-                <div className="flex items-center gap-2">
-                  <Input
-                    placeholder="Key (e.g. exterior)"
-                    value={section.key}
-                    onChange={(e) => updateSection(sIdx, { key: e.target.value })}
-                    className="flex-1"
-                  />
-                  <Input
-                    placeholder="Label (e.g. Exterior)"
-                    value={section.label}
-                    onChange={(e) => updateSection(sIdx, { label: e.target.value })}
-                    className="flex-1"
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon-sm"
-                    onClick={() => removeSection(sIdx)}
-                  >
-                    <Trash2 className="h-4 w-4 text-destructive" />
-                  </Button>
-                </div>
+              const includedCount = def.options.filter(
+                (opt) => state.items[opt.id]?.included
+              ).length;
+              const isOpen = expanded[def.key];
+              const filter = filters[def.key]?.toLowerCase() ?? "";
+              const visibleOptions = filter
+                ? def.options.filter((opt) => opt.label.toLowerCase().includes(filter))
+                : def.options;
 
-                <div className="space-y-2 pl-2">
-                  {section.items.map((item, iIdx) => (
-                    <div key={iIdx} className="flex items-center gap-2">
-                      <Input
-                        placeholder="item_id"
-                        value={item.id}
-                        onChange={(e) =>
-                          updateItem(sIdx, iIdx, { id: e.target.value })
-                        }
-                        className="w-28"
-                      />
-                      <Input
-                        placeholder="Label"
-                        value={item.label}
-                        onChange={(e) =>
-                          updateItem(sIdx, iIdx, { label: e.target.value })
-                        }
-                        className="flex-1"
-                      />
-                      <Select
-                        value={item.type}
-                        onValueChange={(val) =>
-                          updateItem(sIdx, iIdx, { type: val as string })
-                        }
-                      >
-                        <SelectTrigger className="w-44">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {ITEM_TYPES.map((t) => (
-                            <SelectItem key={t} value={t}>
-                              {t}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon-sm"
-                        onClick={() => removeItem(sIdx, iIdx)}
-                      >
-                        <Trash2 className="h-3.5 w-3.5 text-destructive" />
-                      </Button>
+              return (
+                <div key={def.key} className="rounded-lg border">
+                  <div className="flex items-center justify-between p-3">
+                    <button
+                      type="button"
+                      className="flex items-center gap-2 text-sm font-medium"
+                      onClick={() =>
+                        setExpanded((prev) => ({ ...prev, [def.key]: !prev[def.key] }))
+                      }
+                    >
+                      {isOpen ? (
+                        <ChevronDown className="h-4 w-4" />
+                      ) : (
+                        <ChevronRight className="h-4 w-4" />
+                      )}
+                      {def.label}
+                      {state.enabled && (
+                        <span className="text-xs text-muted-foreground">
+                          ({includedCount}/{def.options.length})
+                        </span>
+                      )}
+                    </button>
+                    <Switch
+                      checked={state.enabled}
+                      onCheckedChange={(checked) => toggleSectionEnabled(def.key, checked)}
+                    />
+                  </div>
+
+                  {state.enabled && isOpen && (
+                    <div className="border-t p-3 space-y-3">
+                      <div className="flex items-center gap-2">
+                        <Input
+                          placeholder={`Filter ${def.label.toLowerCase()}...`}
+                          value={filters[def.key] ?? ""}
+                          onChange={(e) =>
+                            setFilters((prev) => ({ ...prev, [def.key]: e.target.value }))
+                          }
+                          className="h-8 text-xs"
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="shrink-0"
+                          onClick={() => selectAll(def.key, def.options.map((o) => o.id))}
+                        >
+                          Select all
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="shrink-0"
+                          onClick={() => clearAll(def.key, def.options.map((o) => o.id))}
+                        >
+                          Clear
+                        </Button>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto pr-1">
+                        {visibleOptions.map((opt) => {
+                          const itemState = state.items[opt.id];
+                          return (
+                            <div key={opt.id} className="flex items-center gap-2">
+                              <Checkbox
+                                checked={itemState.included}
+                                onCheckedChange={(checked) =>
+                                  toggleItem(def.key, opt.id, checked === true)
+                                }
+                              />
+                              <span className="text-sm flex-1 truncate">{opt.label}</span>
+                              {/* {itemState.included && (
+                                <Select
+                                  value={itemState.type}
+                                  onValueChange={(val) =>
+                                    setItemType(def.key, opt.id, val as string)
+                                  }
+                                >
+                                  <SelectTrigger className="h-7 w-28 text-xs">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {ITEM_TYPES.map((t) => (
+                                      <SelectItem key={t} value={t} className="text-xs">
+                                        {t}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              )} */}
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
-                  ))}
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => addItem(sIdx)}
-                  >
-                    <Plus className="h-3.5 w-3.5 mr-1" />
-                    Add Item
-                  </Button>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <DialogFooter>

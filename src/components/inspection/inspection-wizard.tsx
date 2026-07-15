@@ -42,6 +42,7 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
         current_step: store.currentStep,
         customer_data: store.customer,
         vehicle_data: store.vehicle,
+
         exterior_data: store.exterior,
         paint_data: store.paint,
         chassis_data: store.chassis,
@@ -54,6 +55,7 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
         interior_data: store.interior,
         electronics_data: store.electronics,
         road_test_data: store.roadTest,
+        
         photos_data: store.photos,
         started_at: store.startedAt,
         ...(status === "completed" && {

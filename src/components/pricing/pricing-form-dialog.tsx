@@ -167,7 +167,7 @@ useEffect(() => {
 <div className="space-y-2">
   <Label>Linked Template</Label>
   <Select
-    items={}
+    // items={}
     value={templateId ?? undefined}
     onValueChange={(val) => setTemplateId(val as string)}
   >
