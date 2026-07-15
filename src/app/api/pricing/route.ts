@@ -36,6 +36,8 @@ export async function POST(request: Request) {
       base_price: body.base_price,
       description: body.description,
       is_active: body.is_active ?? true,
+      template_id: body.template_id,
+      
     })
     .select()
     .single();

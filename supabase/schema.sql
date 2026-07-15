@@ -70,6 +70,8 @@ CREATE TABLE inspections (
   vehicle_id UUID REFERENCES vehicles(id) ON DELETE SET NULL,
   customer_id UUID REFERENCES customers(id) ON DELETE SET NULL,
   inspector_id UUID REFERENCES profiles(id) ON DELETE SET NULL,
+  template_id UUID REFERENCES inspection_templates(id) ON DELETE SET NULL,
+  pricing_id UUID REFERENCES pricing(id) ON DELETE SET NULL,
   status inspection_status NOT NULL DEFAULT 'draft',
   current_step INTEGER DEFAULT 1,
   customer_data JSONB DEFAULT '{}',
@@ -109,6 +111,7 @@ CREATE TABLE inspection_templates (
 CREATE TABLE pricing (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   company_id UUID NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+  template_id UUID REFERENCES inspection_templates(id) ON DELETE SET NULL,
   name TEXT NOT NULL,
   base_price DECIMAL(10,2) NOT NULL,
   description TEXT,
@@ -167,3 +170,6 @@ CREATE INDEX idx_inspections_company ON inspections(company_id);
 CREATE INDEX idx_inspections_status ON inspections(status);
 CREATE INDEX idx_inspections_inspector ON inspections(inspector_id);
 CREATE INDEX idx_inspections_created ON inspections(created_at DESC);
+CREATE INDEX idx_inspections_template ON inspections(template_id);
+CREATE INDEX idx_inspections_pricing ON inspections(pricing_id);
+CREATE INDEX idx_pricing_template ON pricing(template_id);

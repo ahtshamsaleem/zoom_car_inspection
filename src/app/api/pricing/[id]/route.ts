@@ -21,6 +21,7 @@ export async function PATCH(
       ...(body.base_price !== undefined && { base_price: body.base_price }),
       ...(body.description !== undefined && { description: body.description }),
       ...(body.is_active !== undefined && { is_active: body.is_active }),
+       ...(body.template_id !== undefined && { template_id: body.template_id }),
     })
     .eq("id", id)
     .select()
