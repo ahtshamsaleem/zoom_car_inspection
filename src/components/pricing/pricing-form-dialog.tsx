@@ -29,7 +29,8 @@ export type PricingItem = {
   base_price: number;
   description: string | null;
   is_active: boolean;
-    template_id: string | null; // add this
+  template_id: string | null;
+  is_default: boolean; // add this
 };
 
 interface PricingFormDialogProps {
@@ -51,19 +52,19 @@ export function PricingFormDialog({
   const [basePrice, setBasePrice] = useState("");
   const [description, setDescription] = useState("");
   const [isActive, setIsActive] = useState(true);
+  const [isDefault, setIsDefault] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   // inside PricingFormDialog, add state + fetch:
-const [templates, setTemplates] = useState<{ id: string; name: string }[]>([]);
-const [templateId, setTemplateId] = useState<string | null>(null);
+  const [templates, setTemplates] = useState<{ id: string; name: string }[]>([]);
+  const [templateId, setTemplateId] = useState<string | null>(null);
 
-useEffect(() => {
-  fetch("/api/templates")
-    .then((res) => res.json())
-    .then((data) => setTemplates(Array.isArray(data) ? data : []))
-    .catch(() => {});
-}, []);
-
+  useEffect(() => {
+    fetch("/api/templates")
+      .then((res) => res.json())
+      .then((data) => setTemplates(Array.isArray(data) ? data : []))
+      .catch(() => {});
+  }, []);
 
   // Reset the form whenever the dialog opens (add mode or a different plan for edit)
   useEffect(() => {
@@ -72,6 +73,7 @@ useEffect(() => {
       setBasePrice(pricing?.base_price?.toString() ?? "");
       setDescription(pricing?.description ?? "");
       setIsActive(pricing?.is_active ?? true);
+      setIsDefault(pricing?.is_default ?? false);
       setTemplateId(pricing?.template_id ?? null);
     }
   }, [open, pricing]);
@@ -97,6 +99,7 @@ useEffect(() => {
           base_price: parseFloat(basePrice),
           description: description.trim() || null,
           is_active: isActive,
+          is_default: isDefault,
           template_id: templateId,
         }),
       });
@@ -163,31 +166,37 @@ useEffect(() => {
             />
           </div>
 
-          
-<div className="space-y-2">
-  <Label>Linked Template</Label>
-  <Select
-    // items={}
-    value={templateId ?? undefined}
-    onValueChange={(val) => setTemplateId(val as string)}
-  >
-    <SelectTrigger>
-      <SelectValue placeholder="No template linked" />
-    </SelectTrigger>
-    <SelectContent>
-      {templates.map((t) => (
-        <SelectItem key={t.id} value={t.id}>
-          {t.name}
-        </SelectItem>
-      ))}
-    </SelectContent>
-  </Select>
-  <p className="text-xs text-muted-foreground">
-    Auto-loads this checklist when this price tier is selected
-  </p>
-</div>
+          <div className="flex items-center justify-between rounded-lg border p-3">
+            <div>
+              <Label htmlFor="is_default">Default pricing</Label>
+              <p className="text-xs text-muted-foreground">
+                Auto-selected when starting a new inspection
+              </p>
+            </div>
+            <Switch id="is_default" checked={isDefault} onCheckedChange={setIsDefault} />
+          </div>
 
-
+          <div className="space-y-2">
+            <Label>Linked Template</Label>
+            <Select
+              value={templateId ?? undefined}
+              onValueChange={(val) => setTemplateId(val as string)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="No template linked" />
+              </SelectTrigger>
+              <SelectContent>
+                {templates.map((t) => (
+                  <SelectItem key={t.id} value={t.id}>
+                    {t.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              Auto-loads this checklist when this price tier is selected
+            </p>
+          </div>
 
           <div className="flex items-center justify-between rounded-lg border p-3">
             <div>

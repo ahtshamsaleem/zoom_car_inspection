@@ -116,6 +116,7 @@ CREATE TABLE pricing (
   base_price DECIMAL(10,2) NOT NULL,
   description TEXT,
   is_active BOOLEAN DEFAULT TRUE,
+  is_default BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

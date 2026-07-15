@@ -14,6 +14,13 @@ export async function PATCH(
 
   const body = await request.json();
 
+    if (body.is_default) {
+    await supabase
+      .from("pricing")
+      .update({ is_default: false })
+      .eq("company_id", auth!.profile.company_id!);
+  }
+
   const { data, error } = await supabase
     .from("pricing")
     .update({
@@ -21,6 +28,7 @@ export async function PATCH(
       ...(body.base_price !== undefined && { base_price: body.base_price }),
       ...(body.description !== undefined && { description: body.description }),
       ...(body.is_active !== undefined && { is_active: body.is_active }),
+      ...(body.is_default !== undefined && { is_default: body.is_default }),
        ...(body.template_id !== undefined && { template_id: body.template_id }),
     })
     .eq("id", id)

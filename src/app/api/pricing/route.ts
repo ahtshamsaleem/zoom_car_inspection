@@ -36,7 +36,9 @@ export async function POST(request: Request) {
       base_price: body.base_price,
       description: body.description,
       is_active: body.is_active ?? true,
+      is_default: body.is_default ?? false,
       template_id: body.template_id,
+
       
     })
     .select()

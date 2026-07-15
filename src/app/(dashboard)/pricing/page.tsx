@@ -24,8 +24,6 @@ export default function PricingPage() {
   const [editingPlan, setEditingPlan] = useState<PricingItem | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-
-
   async function fetchPricing() {
     setLoading(true);
     try {
@@ -40,7 +38,7 @@ export default function PricingPage() {
     }
   }
 
-    useEffect(() => {
+  useEffect(() => {
     fetchPricing();
   }, []);
 
@@ -57,9 +55,13 @@ export default function PricingPage() {
   function handleSaved(saved: PricingItem) {
     setPlans((prev) => {
       const exists = prev.some((p) => p.id === saved.id);
-      return exists
+      const next = exists
         ? prev.map((p) => (p.id === saved.id ? saved : p))
         : [saved, ...prev];
+      // if this one became default, un-default the others locally
+      return saved.is_default
+        ? next.map((p) => (p.id === saved.id ? p : { ...p, is_default: false }))
+        : next;
     });
   }
 
@@ -98,6 +100,23 @@ export default function PricingPage() {
     }
   }
 
+  async function handleSetDefault(plan: PricingItem) {
+    try {
+      const res = await fetch(`/api/pricing/${plan.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ is_default: true }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to update");
+
+      handleSaved(data);
+      toast.success("Default pricing updated");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to update");
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -130,6 +149,7 @@ export default function PricingPage() {
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-base">{plan.name}</CardTitle>
                   <div className="flex items-center gap-2">
+                    {plan.is_default && <Badge>Default</Badge>}
                     <Badge variant={plan.is_active ? "default" : "secondary"}>
                       {plan.is_active ? "Active" : "Inactive"}
                     </Badge>
@@ -143,6 +163,11 @@ export default function PricingPage() {
                         <DropdownMenuItem onClick={() => handleEditClick(plan)}>
                           Edit
                         </DropdownMenuItem>
+                        {!plan.is_default && (
+                          <DropdownMenuItem onClick={() => handleSetDefault(plan)}>
+                            Set as Default
+                          </DropdownMenuItem>
+                        )}
                         <DropdownMenuItem onClick={() => handleToggleActive(plan)}>
                           {plan.is_active ? "Mark Inactive" : "Mark Active"}
                         </DropdownMenuItem>
