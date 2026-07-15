@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { EXTERIOR_PARTS, CONDITION_COLORS } from "@/constants/inspection";
 import { VehicleDiagram } from "@/components/inspection/vehicle-diagram";
-import type { PartCondition, PartInspection } from "@/types";
+import type { PartCondition, PartInspection, Stroke } from "@/types";
 
 // --- REACT-PDF IMPORTS ---
 import { Document, Page, Text, View, StyleSheet, Image as PDFImage, Font } from "@react-pdf/renderer";
@@ -23,6 +23,7 @@ interface InspectionData {
   customer_data?: Record<string, string>;
   vehicle_data?: Record<string, string | number>;
   exterior_data?: Record<string, PartInspection>;
+    annotations_data?: Stroke[];
   profiles?: { full_name?: string };
 }
 
@@ -519,7 +520,7 @@ export default function InspectionReportPage() {
               <CardTitle style={{ color: accent }}>Exterior Issues ({issues.length})</CardTitle>
             </CardHeader>
             <CardContent>
-              <VehicleDiagram parts={exterior} onPartClick={() => {}} view="top" />
+              <VehicleDiagram parts={exterior} onPartClick={() => {}} view="top" readOnly annotations={inspection.annotations_data || []}/>
               <Separator className="my-4" />
               <div className="grid gap-2 sm:grid-cols-2">
                 {issues.map(([partId, data]) => {

@@ -64,6 +64,15 @@ query = query
   return NextResponse.json(data);
 }
 
+
+
+
+
+
+
+
+
+
 export async function POST(request: Request) {
   const supabase = await createClient();
   const auth = await getAuthProfile(supabase);

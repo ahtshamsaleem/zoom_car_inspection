@@ -113,6 +113,15 @@ export interface Inspection {
   updated_at: string;
 }
 
+
+// in @/types/index.ts (or wherever your other shared types live)
+export interface Stroke {
+  id: string;
+  d: string;
+  color: string;
+  width: number;
+}
+
 export interface CustomerFormData {
   name: string;
   mobile: string;
@@ -150,4 +159,72 @@ export interface DashboardStats {
     vehicle_data?: { plateNumber?: string; make?: string; model?: string };
     profiles?: { full_name?: string };
   }>;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export interface InspectionData {
+  id: string;
+  status: string;
+  created_at: string;
+  completed_at?: string;
+  customer_data?: Record<string, string>;
+  vehicle_data?: Record<string, string | number>;
+  exterior_data?: Record<string, PartInspection>;
+  annotations_data?: Stroke[];
+  profiles?: { full_name?: string };
+}
+ 
+export interface CompanySettings {
+  name?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  logo_url?: string;
+  letterhead_header_url?: string;
+  letterhead_footer_url?: string;
+  stamp_url?: string;
+  website?: string;
+  license_number?: string;
+  accent_color?: string;
+  settings?: { reportFooter?: string };
+}
+ 
+// A remote or generated image, pre-resolved to a data URL so both PDF
+// exporters (and, if you keep it, jsPDF) embed the *exact* same bytes
+// instead of each fetching/rasterizing it independently.
+export interface ImageAsset {
+  dataUrl: string;
+  width: number;
+  height: number;
+  format: "PNG" | "JPEG";
+}
+ 
+export interface ReportAssets {
+  header: ImageAsset | null;
+  footer: ImageAsset | null;
+  stamp: ImageAsset | null;
+  diagram: ImageAsset | null;
 }

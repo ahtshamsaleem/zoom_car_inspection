@@ -1,5 +1,10 @@
 import type { PartCondition } from "@/types";
 
+
+export const DEFAULT_ACCENT = "#2563eb";
+
+
+
 export const INSPECTION_STEPS = [
   { id: 1, key: "customer", label: "Customer Info" },
   { id: 2, key: "vehicle", label: "Vehicle Info" },

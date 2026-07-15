@@ -94,6 +94,7 @@ CREATE TABLE inspections (
   inspection_time_minutes INTEGER,
   price DECIMAL(10,2),
   notes TEXT,
+  annotations_data JSONB DEFAULT '[]',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

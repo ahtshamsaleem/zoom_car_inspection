@@ -7,8 +7,10 @@ import type {
   PaintPanelInspection,
   TireInspection,
   VehicleFormData,
+  Stroke
 } from "@/types";
 
+ 
 interface InspectionState {
   inspectionId: string | null;
   currentStep: number;
@@ -29,6 +31,7 @@ interface InspectionState {
   photos: Record<string, string[]>;
   startedAt: string | null;
   activePartId: string | null;
+  annotations: Stroke[];
 
   setInspectionId: (id: string | null) => void;
   setCurrentStep: (step: number) => void;
@@ -57,6 +60,7 @@ interface InspectionState {
   startInspection: () => void;
   reset: () => void;
   loadFromInspection: (data: Record<string, unknown>) => void;
+  setAnnotations: (strokes: Stroke[]) => void;
 }
 
 const initialCustomer: CustomerFormData = {
@@ -103,6 +107,7 @@ export const useInspectionStore = create<InspectionState>()(
       photos: {},
       startedAt: null,
       activePartId: null,
+      annotations: [],
 
       setInspectionId: (id) => set({ inspectionId: id }),
       setCurrentStep: (step) => set({ currentStep: step }),
@@ -143,6 +148,7 @@ export const useInspectionStore = create<InspectionState>()(
       setActivePartId: (partId) => set({ activePartId: partId }),
       startInspection: () =>
         set({ startedAt: new Date().toISOString(), currentStep: 1 }),
+       setAnnotations: (strokes) => set({ annotations: strokes }),
       reset: () =>
         set({
           inspectionId: null,
@@ -164,6 +170,7 @@ export const useInspectionStore = create<InspectionState>()(
           photos: {},
           startedAt: null,
           activePartId: null,
+          annotations: []
         }),
       loadFromInspection: (data) =>
         set({
@@ -188,6 +195,7 @@ export const useInspectionStore = create<InspectionState>()(
           roadTest: (data.road_test_data as Record<string, ChecklistItem>) || {},
           photos: (data.photos_data as Record<string, string[]>) || {},
           startedAt: (data.started_at as string) || null,
+          annotations: (data.annotations_data as Stroke[]) || [],
         }),
     }),
     { name: "zoom-inspection-draft" }

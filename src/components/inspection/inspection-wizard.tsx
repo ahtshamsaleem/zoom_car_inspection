@@ -56,6 +56,7 @@ export function InspectionWizard({ inspectionId }: InspectionWizardProps) {
         electronics_data: store.electronics,
         road_test_data: store.roadTest,
         
+        annotations_data: store.annotations, // add this
         photos_data: store.photos,
         started_at: store.startedAt,
         ...(status === "completed" && {
