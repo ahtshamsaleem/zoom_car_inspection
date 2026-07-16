@@ -24,6 +24,8 @@ interface InspectionRow {
   id: string;
   status: string;
   created_at: string;
+  template_id: string;
+  pricing_id: string;
   customer_data?: { name?: string; mobile?: string };
   vehicle_data?: { plateNumber?: string; make?: string; model?: string };
   profiles?: { full_name?: string };
@@ -157,7 +159,7 @@ useEffect(() => {
                     <div className="flex justify-end gap-2">
                       {(insp.status === "draft" || insp.status === "in_progress") && (
                         <Link
-                          href={`/inspections/${insp.id}/edit`}
+                          href={`/inspections/${insp.id}/edit?pricingId=${insp.pricing_id}&templateId=${insp.template_id}`}
                           className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
                         >
                           {t("inspections.actions.continue")}

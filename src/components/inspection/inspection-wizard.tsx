@@ -250,7 +250,7 @@ export function InspectionWizard({ inspectionId, templateId, pricingId }: Inspec
       case 1:
         return <CustomerStep ref={customerStepRef} />;
       case 2:
-        return <VehicleStep  />;
+        return <VehicleStep ref={vehicleStepRef} />;
       case 3:
         return <ExteriorStep />;
       case 4:

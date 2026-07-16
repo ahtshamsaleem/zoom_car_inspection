@@ -1,15 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { InspectionWizard } from "@/components/inspection/inspection-wizard";
 import { useInspectionStore } from "@/stores/inspection-store";
 
 export default function EditInspectionPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
+  
   const id = params.id as string;
   const { loadFromInspection } = useInspectionStore();
   const [loading, setLoading] = useState(true);
+
+    const pricingId = searchParams.get("pricingId") ?? undefined;
+  const templateId = searchParams.get("templateId") ?? undefined;
+
 
   useEffect(() => {
     fetch(`/api/inspections/${id}`)
@@ -29,5 +35,5 @@ export default function EditInspectionPage() {
     );
   }
 
-  return <InspectionWizard inspectionId={id} />;
+  return <InspectionWizard inspectionId={id} templateId={templateId} pricingId={pricingId}/>;
 }

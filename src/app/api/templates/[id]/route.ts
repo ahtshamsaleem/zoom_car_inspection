@@ -1,6 +1,35 @@
 import { createClient } from "@/lib/supabase/server";
-import { getAuthProfile, requireManager } from "@/lib/auth-helpers";
+import { getAuthProfile, requireCompany, requireManager } from "@/lib/auth-helpers";
 import { NextResponse } from "next/server";
+
+
+
+
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+    const { id } = await params;
+  const supabase = await createClient();
+  const auth = await getAuthProfile(supabase);
+  const denied = requireCompany(auth);
+  if (denied) return denied;
+
+  const { data, error } = await supabase
+    .from("inspection_templates")
+    .select().eq("id", id)
+    .single();
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json(data);
+}
+
+
+
+
+
 
 export async function PATCH(
   request: Request,
