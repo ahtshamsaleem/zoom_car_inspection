@@ -1,5 +1,6 @@
 "use client";
 
+import { forwardRef, useImperativeHandle } from "react";               // + forwardRef, useImperativeHandle
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
@@ -15,8 +16,9 @@ import { vehicleSchema, type VehicleFormValues } from "@/lib/validations/schemas
 import { FUEL_TYPES, TRANSMISSION_TYPES } from "@/constants/inspection";
 import { useInspectionStore } from "@/stores/inspection-store";
 import { useTranslation } from "@/hooks/use-translation";
+import type { StepHandle } from "@/types";                              // + StepHandle
 
-export function VehicleStep() {
+export const VehicleStep = forwardRef<StepHandle>(function VehicleStep(_props, ref) {  // + forwardRef wrapper
   const { t } = useTranslation();
   const { vehicle, setVehicle } = useInspectionStore();
 
@@ -24,6 +26,8 @@ export function VehicleStep() {
     resolver: zodResolver(vehicleSchema),
     defaultValues: vehicle,
   });
+
+  useImperativeHandle(ref, () => ({ validate: () => form.trigger() }), [form]);  // + expose validate()
 
   const onFieldChange = (
     field: keyof VehicleFormValues,
@@ -51,6 +55,11 @@ export function VehicleStep() {
             onChange={(e) => onFieldChange("plateNumber", e.target.value)}
             placeholder={t("steps.vehicleStep.plateNumber.placeholder")}
           />
+          {form.formState.errors.plateNumber && (                        // + error message (only required field)
+            <p className="text-sm text-destructive">
+              {form.formState.errors.plateNumber.message}
+            </p>
+          )}
         </div>
         <div className="space-y-2">
           <Label htmlFor="vin">{t("steps.vehicleStep.vin.label")}</Label>
@@ -177,4 +186,4 @@ export function VehicleStep() {
       </div>
     </div>
   );
-}
+});

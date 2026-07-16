@@ -1,5 +1,6 @@
 "use client";
 
+import { forwardRef, useImperativeHandle } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
@@ -7,8 +8,9 @@ import { Label } from "@/components/ui/label";
 import { customerSchema, type CustomerFormValues } from "@/lib/validations/schemas";
 import { useInspectionStore } from "@/stores/inspection-store";
 import { useTranslation } from "@/hooks/use-translation";
+import type { StepHandle } from "@/types";
 
-export function CustomerStep() {
+export const CustomerStep = forwardRef<StepHandle>(function CustomerStep(_props, ref) {
   const { t } = useTranslation();
   const { customer, setCustomer } = useInspectionStore();
 
@@ -16,6 +18,10 @@ export function CustomerStep() {
     resolver: zodResolver(customerSchema),
     defaultValues: customer,
   });
+
+  useImperativeHandle(ref, () => ({
+    validate: () => form.trigger(),
+  }), [form]);
 
   const onFieldChange = (field: keyof CustomerFormValues, value: string) => {
     form.setValue(field, value);
@@ -26,9 +32,7 @@ export function CustomerStep() {
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-semibold">{t("steps.customerStep.title")}</h2>
-        <p className="text-sm text-muted-foreground">
-          {t("steps.customerStep.subtitle")}
-        </p>
+        <p className="text-sm text-muted-foreground">{t("steps.customerStep.subtitle")}</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -65,6 +69,9 @@ export function CustomerStep() {
             onChange={(e) => onFieldChange("email", e.target.value)}
             placeholder={t("steps.customerStep.email.placeholder")}
           />
+          {form.formState.errors.email && (
+            <p className="text-sm text-destructive">{form.formState.errors.email.message}</p>
+          )}
         </div>
         <div className="space-y-2">
           <Label htmlFor="emiratesId">{t("steps.customerStep.emiratesId.label")}</Label>
@@ -78,4 +85,4 @@ export function CustomerStep() {
       </div>
     </div>
   );
-}
+});

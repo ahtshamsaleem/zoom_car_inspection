@@ -17,6 +17,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useTranslation } from "@/hooks/use-translation";
+import { NewInspectionMenu } from "@/components/inspection/new-inspection-menu";
+
 
 interface InspectionRow {
   id: string;
@@ -71,13 +73,15 @@ useEffect(() => {
           </h1>
           <p className="text-muted-foreground">{t("inspections.subtitle")}</p>
         </div>
-        <Link
+        {/* <Link
           href="/inspections/new"
           className={cn(buttonVariants(), "bg-blue-600 hover:bg-blue-700")}
         >
           <Plus className="h-4 w-4 me-1" />
           {t("inspections.newInspection")}
-        </Link>
+        </Link> */}
+
+        <NewInspectionMenu />
       </div>
 
       <div className="relative max-w-sm">

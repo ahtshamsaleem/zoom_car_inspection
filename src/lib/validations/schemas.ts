@@ -27,6 +27,14 @@ export const vehicleSchema = z.object({
   trim: z.string().optional(),
   year: z.coerce.number().min(1900).max(2030).optional(),
   mileage: z.coerce.number().min(0).optional(),
+//   year: z.preprocess(
+//   (v) => (v === "" || v === undefined ? undefined : v),
+//   z.coerce.number().min(1900).max(2030).optional()
+// ),
+// mileage: z.preprocess(
+//   (v) => (v === "" || v === undefined ? undefined : v),
+//   z.coerce.number().min(0).optional()
+// ),
   engineSize: z.string().optional(),
   fuelType: z.string().optional(),
   transmission: z.string().optional(),

@@ -228,3 +228,9 @@ export interface ReportAssets {
   stamp: ImageAsset | null;
   diagram: ImageAsset | null;
 }
+
+
+
+export interface StepHandle {
+  validate: () => Promise<boolean>;
+}

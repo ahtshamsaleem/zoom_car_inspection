@@ -32,6 +32,7 @@ interface InspectionState {
   startedAt: string | null;
   activePartId: string | null;
   annotations: Stroke[];
+  templateSections: string[] | null;
 
   setInspectionId: (id: string | null) => void;
   setCurrentStep: (step: number) => void;
@@ -61,6 +62,7 @@ interface InspectionState {
   reset: () => void;
   loadFromInspection: (data: Record<string, unknown>) => void;
   setAnnotations: (strokes: Stroke[]) => void;
+   setTemplateSections: (sections: string[] | null) => void;
 }
 
 const initialCustomer: CustomerFormData = {
@@ -108,6 +110,7 @@ export const useInspectionStore = create<InspectionState>()(
       startedAt: null,
       activePartId: null,
       annotations: [],
+       templateSections: null,
 
       setInspectionId: (id) => set({ inspectionId: id }),
       setCurrentStep: (step) => set({ currentStep: step }),
@@ -149,6 +152,7 @@ export const useInspectionStore = create<InspectionState>()(
       startInspection: () =>
         set({ startedAt: new Date().toISOString(), currentStep: 1 }),
        setAnnotations: (strokes) => set({ annotations: strokes }),
+       setTemplateSections: (sections) => set({ templateSections: sections }),
       reset: () =>
         set({
           inspectionId: null,
@@ -170,7 +174,8 @@ export const useInspectionStore = create<InspectionState>()(
           photos: {},
           startedAt: null,
           activePartId: null,
-          annotations: []
+          annotations: [],
+           templateSections: null,
         }),
       loadFromInspection: (data) =>
         set({
