@@ -1,8 +1,10 @@
 {
-  "checklistStep": {
+"checklistStep": {
+    "issuesCount": "{count} issue(s)",
     "selectStatusPlaceholder": "Select status",
     "issueDescriptionPlaceholder": "Describe the issue...",
-    "issuesCount": "{count} issues"
+    "yes": "Yes",
+    "no": "No"
   },
   "customerStep": {
     "title": "Customer Information",

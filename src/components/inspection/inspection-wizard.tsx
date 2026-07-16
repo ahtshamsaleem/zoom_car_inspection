@@ -271,6 +271,7 @@ export function InspectionWizard({ inspectionId, templateId, pricingId }: Inspec
             description={t("inspection_wizard.sections.engine.description")}
             items={ENGINE_ITEMS}
             section="engine"
+            mode="yesno"
           />
         );
       case 7:

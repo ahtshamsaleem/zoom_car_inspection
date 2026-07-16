@@ -12,7 +12,7 @@
   },
   "sections": {
     "chassis": { "title": "Chassis Inspection", "description": "Inspect structural components and accident evidence" },
-    "engine": { "title": "Engine Inspection", "description": "Check engine components, fluids, and performance indicators" },
+    "engine": { "title": "Engine","description": "Check for repair history, oil leaks, mount condition, and abnormal noises." },
     "transmission": { "title": "Transmission Inspection", "description": "Inspect transmission system and related components" },
     "suspension": { "title": "Suspension Inspection", "description": "Check suspension components at all corners" },
     "brakes": { "title": "Brakes Inspection", "description": "Inspect brake system components" },

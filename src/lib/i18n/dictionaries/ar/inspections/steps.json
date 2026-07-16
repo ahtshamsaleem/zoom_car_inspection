@@ -1,8 +1,10 @@
 {
   "checklistStep": {
+     "issuesCount": "{count} ملاحظة",
     "selectStatusPlaceholder": "اختر الحالة",
     "issueDescriptionPlaceholder": "صف المشكلة...",
-    "issuesCount": "{count} مشاكل"
+    "yes": "نعم",
+    "no": "لا"
   },
   "customerStep": {
     "title": "معلومات العميل",

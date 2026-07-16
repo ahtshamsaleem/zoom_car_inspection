@@ -114,22 +114,56 @@ export const CHASSIS_ITEMS = [
   { key: "repairEvidence", label: "Repair Evidence" },
 ] as const;
 
+// export const ENGINE_ITEMS = [
+//   { key: "oilLeak", label: "Oil Leak" },
+//   { key: "coolantLeak", label: "Coolant Leak" },
+//   { key: "engineMount", label: "Engine Mount" },
+//   { key: "belts", label: "Belts" },
+//   { key: "battery", label: "Battery" },
+//   { key: "alternator", label: "Alternator" },
+//   { key: "starter", label: "Starter" },
+//   { key: "radiator", label: "Radiator" },
+//   { key: "coolingFan", label: "Cooling Fan" },
+//   { key: "turbo", label: "Turbo" },
+//   { key: "engineNoise", label: "Engine Noise" },
+//   { key: "smoke", label: "Smoke" },
+//   { key: "oilLevel", label: "Oil Level" },
+//   { key: "coolantLevel", label: "Coolant Level" },
+// ] as const;
+
+
+
 export const ENGINE_ITEMS = [
-  { key: "oilLeak", label: "Oil Leak" },
-  { key: "coolantLeak", label: "Coolant Leak" },
-  { key: "engineMount", label: "Engine Mount" },
-  { key: "belts", label: "Belts" },
-  { key: "battery", label: "Battery" },
-  { key: "alternator", label: "Alternator" },
-  { key: "starter", label: "Starter" },
-  { key: "radiator", label: "Radiator" },
-  { key: "coolingFan", label: "Cooling Fan" },
-  { key: "turbo", label: "Turbo" },
-  { key: "engineNoise", label: "Engine Noise" },
-  { key: "smoke", label: "Smoke" },
-  { key: "oilLevel", label: "Oil Level" },
-  { key: "coolantLevel", label: "Coolant Level" },
+  { key: "previousRepairEvidence", label: "Previous repair evidence" },
+  { key: "previouslyReplaced", label: "Previously replaced" },
+  { key: "oilPanPreviouslyOpened", label: "Engine oil pan previously opened" },
+  { key: "frontCoverPreviouslyOpened", label: "Front engine cover previously opened" },
+  { key: "valveCoverPreviouslyOpened", label: "Valve cover previously opened" },
+  { key: "valveCoverOilLeak", label: "Valve cover oil leak" },
+  { key: "frontCoverOilLeak", label: "Front engine cover oil leak" },
+  { key: "oilPanOilLeak", label: "Engine oil pan oil leak" },
+  { key: "rightEngineMountWorn", label: "Right engine mount worn/damaged" },
+  { key: "leftEngineMountWorn", label: "Left engine mount worn/damaged" },
+  { key: "lowerEngineMountWorn", label: "Lower engine mount worn/damaged" },
+  { key: "oilCoolerPreviouslyOpened", label: "Oil cooler previously opened" },
+  { key: "superchargerPreviouslyOpened", label: "Supercharger previously opened" },
+  { key: "turbochargerPreviouslyOpened", label: "Turbocharger previously opened / replacement evidence" },
+  { key: "oilLeakEngineTransmission", label: "Oil leak between engine and transmission" },
+  { key: "engineMisfire", label: "Engine misfire" },
+  { key: "coldStartNoise", label: "Engine noise during cold start" },
+  { key: "engineAbnormalNoise", label: "Engine abnormal noise" },
+  { key: "driveBeltPulleyNoise", label: "Drive belt pulley noise" },
+  { key: "powerSteeringPumpNoise", label: "Power steering pump noise" },
+  { key: "waterPumpNoise", label: "Water pump noise" },
+  { key: "delayedEngineStart", label: "Delayed engine start" },
+  { key: "starterMotorNoise", label: "Starter motor noise" },
+  { key: "exhaustManifoldNoise", label: "Exhaust manifold noise" },
+  { key: "fuelLeakEvidence", label: "Fuel leak evidence" },
 ] as const;
+
+
+
+
 
 export const TRANSMISSION_ITEMS = [
   { key: "fluidLeak", label: "Fluid Leak" },
